@@ -1,10 +1,11 @@
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, createJSONStorage } from 'zustand/middleware';
+import { createVersionedStorage } from '../utils/storage';
 
 export interface User {
   id: number;
   email: string;
-  name: string;
+  name?: string;
 }
 
 interface AuthState {
@@ -13,6 +14,7 @@ interface AuthState {
   isAuthenticated: boolean;
   setAuth: (user: User, token: string) => void;
   clearAuth: () => void;
+  updateUserName: (name: string) => void;
 }
 
 export const useAuthStore = create<AuthState>()(
@@ -23,8 +25,16 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
       setAuth: (user, token) => set({ user, token, isAuthenticated: true }),
       clearAuth: () => set({ user: null, token: null, isAuthenticated: false }),
+      updateUserName: (name) =>
+        set((state) =>
+          state.user ? { user: { ...state.user, name } } : {}
+        ),
     }),
-    { name: 'auth-storage' }
+    {
+      name: 'auth-storage',
+      version: 1,
+      storage: createJSONStorage(() => createVersionedStorage('auth-storage', 1)),
+    }
   )
 );
 

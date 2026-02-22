@@ -4,6 +4,7 @@ import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { useToastStore } from '../stores/toastStore';
+import { getUserFromToken } from '../utils/jwt';
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email address'),
@@ -38,7 +39,14 @@ export default function Login() {
       if (!response.ok) throw new Error('Invalid credentials');
 
       const result = await response.json();
-      setAuth(result.user, result.token);
+      const accessToken = result.data.access_token;
+      const user = getUserFromToken(accessToken);
+
+      if (!user) {
+        throw new Error('Failed to parse user info');
+      }
+
+      setAuth(user, accessToken);
       addToast('Login successful', 'success');
       navigate('/');
     } catch {
