@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { PageSkeleton } from './components/Skeleton';
 import { ErrorBoundary } from './components/ErrorBoundary';
 import { Toast } from './components/Toast';
+import { ConfirmDialog } from './components/ConfirmDialog';
 
 const Layout = lazy(() => import('./components/layout/Layout'));
 const Dashboard = lazy(() => import('./pages/Dashboard'));
@@ -19,6 +20,7 @@ function App() {
     <ErrorBoundary>
       <Router>
         <Toast />
+        <ConfirmDialog />
         <Suspense fallback={<PageSkeleton />}>
           <Routes>
             <Route path="/login" element={<Login />} />
