@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useNavigate } from 'react-router-dom';
 import { useToastStore } from '../stores/toastStore';
+import api from '../services/api';
 
 const projectSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters').max(100, 'Name must not exceed 100 characters'),
@@ -27,14 +28,7 @@ export default function CreateProject() {
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
-      const response = await fetch('/api/v1/projects', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) throw new Error('Failed to create project');
-
+      await api.post('/api/v1/projects', data);
       addToast('Project created successfully', 'success');
       navigate('/');
     } catch {
