@@ -1,15 +1,7 @@
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
-import axios from 'axios';
-
-export interface Project {
-  id: number;
-  name: string;
-  description: string;
-  isPublic: boolean;
-  createdAt: string;
-  updatedAt: string;
-}
+import { fetchProjects as fetchProjectsFromAPI, deleteProject as deleteProjectFromAPI } from '../services/apiService';
+import type { Project } from '../utils/transformers';
 
 interface ProjectState {
   projects: Project[];
@@ -17,13 +9,14 @@ interface ProjectState {
   loading: boolean;
   error: string | null;
   fetchProjects: () => Promise<void>;
+  deleteProject: (projectId: number) => Promise<void>;
   setCurrentProject: (project: Project) => void;
   clearError: () => void;
 }
 
 export const useProjectStore = create<ProjectState>()(
   devtools(
-    (set, get) => ({
+    (set) => ({
       projects: [],
       currentProject: null,
       loading: false,
@@ -31,13 +24,29 @@ export const useProjectStore = create<ProjectState>()(
       fetchProjects: async () => {
         set({ loading: true, error: null });
         try {
-          const response = await axios.get('/api/v1/projects');
-          set({ projects: response.data, loading: false });
+          const projects = await fetchProjectsFromAPI();
+          set({ projects, loading: false });
         } catch (error) {
           set({
             error: error instanceof Error ? error.message : 'Failed to fetch projects',
             loading: false,
           });
+        }
+      },
+      deleteProject: async (projectId: number) => {
+        set({ loading: true, error: null });
+        try {
+          await deleteProjectFromAPI(projectId);
+          set((state) => ({
+            projects: state.projects.filter((p) => p.id !== projectId),
+            loading: false,
+          }));
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : 'Failed to delete project',
+            loading: false,
+          });
+          throw error;
         }
       },
       setCurrentProject: (project) => set({ currentProject: project }),
