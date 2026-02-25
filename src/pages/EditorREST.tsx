@@ -1,16 +1,20 @@
-import { useEffect, useCallback, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAPIStore } from '../stores/apiStore';
-import { useToastStore } from '../stores/toastStore';
-import { RESTForm } from '../components/editor/RESTForm';
+import { useEffect, useCallback, useMemo, useState } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { useAPIStore } from "../stores/apiStore";
+import { useToastStore } from "../stores/toastStore";
+import { RESTForm } from "../components/editor/RESTForm";
+import { logger } from "../utils/logger";
 
 export default function EditorREST() {
-  const { id, restId } = useParams<{ id?: string; restId?: string }>();
+  const { id } = useParams<{ id?: string }>();
+  const location = useLocation();
   const navigate = useNavigate();
   const { addToast } = useToastStore();
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const isEditing = Boolean(restId);
-  const projectId = id ? Number(id) : 0;
+  const isEditing = location.pathname.endsWith("/edit");
+  const projectId = !isEditing && id ? Number(id) : 0;
+  const apiId = isEditing && id ? Number(id) : undefined;
 
   const {
     currentRestAPI,
@@ -24,41 +28,49 @@ export default function EditorREST() {
   } = useAPIStore();
 
   useEffect(() => {
-    if (isEditing && restId) {
-      fetchRestAPI(Number(restId));
+    if (isEditing && apiId) {
+      fetchRestAPI(apiId);
     }
     return () => {
       clearCurrentAPI();
     };
-  }, [isEditing, restId, fetchRestAPI, clearCurrentAPI]);
+  }, [isEditing, apiId, fetchRestAPI, clearCurrentAPI]);
 
   useEffect(() => {
     if (error) {
-      addToast(error, 'error');
+      addToast(error, "error");
       clearError();
     }
   }, [error, addToast, clearError]);
 
-  const handleSubmit = useCallback(async (data: any) => {
-    try {
-      if (isEditing && restId) {
-        await updateRestAPI(Number(restId), data);
-        addToast('API updated successfully', 'success');
-      } else {
-        await createRestAPI(projectId, data);
-        addToast('API created successfully', 'success');
-        navigate(`/projects/${projectId}`);
+  const handleSubmit = useCallback(
+    async (data: any) => {
+      logger.debug("[EditorREST] handleSubmit called", { isEditing, apiId });
+      setIsSubmitting(true);
+      try {
+        if (isEditing && apiId) {
+          await updateRestAPI(apiId, data);
+          addToast("API updated successfully", "success");
+        } else {
+          await createRestAPI(projectId, data);
+          addToast("API created successfully", "success");
+          navigate(`/projects/${projectId}`);
+        }
+      } catch (err) {
+        logger.error("[EditorREST] handleSubmit error", err);
+        addToast("Failed to save API", "error");
+      } finally {
+        setIsSubmitting(false);
       }
-    } catch (err) {
-      addToast('Failed to save API', 'error');
-    }
-  }, [isEditing, restId, projectId, updateRestAPI, createRestAPI, navigate, addToast]);
+    },
+    [isEditing, apiId, projectId, updateRestAPI, createRestAPI, navigate, addToast]
+  );
 
   const handleCancel = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const title = useMemo(() => (isEditing ? 'Edit REST API' : 'Create REST API'), [isEditing]);
+  const title = useMemo(() => (isEditing ? "Edit REST API" : "Create REST API"), [isEditing]);
 
   if (loading && isEditing) {
     return (
@@ -86,10 +98,10 @@ export default function EditorREST() {
       <RESTForm
         initialData={currentRestAPI}
         onSubmit={handleSubmit}
-        isSubmitting={loading}
+        isSubmitting={isSubmitting}
         onCancel={handleCancel}
         projectId={projectId}
-        restId={restId ? Number(restId) : undefined}
+        restId={apiId}
       />
     </div>
   );

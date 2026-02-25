@@ -1,9 +1,10 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { createVersionedStorage } from '../utils/storage';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { createVersionedStorage } from "../utils/storage";
+import { logger } from "../utils/logger";
 
 export interface User {
-  id: number;
+  id_user: number;
   email: string;
   name?: string;
 }
@@ -14,6 +15,7 @@ interface AuthState {
   isAuthenticated: boolean;
   setAuth: (user: User, token: string) => void;
   clearAuth: () => void;
+  logout: () => void;
   updateUserName: (name: string) => void;
 }
 
@@ -23,17 +25,31 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       token: null,
       isAuthenticated: false,
-      setAuth: (user, token) => set({ user, token, isAuthenticated: true }),
-      clearAuth: () => set({ user: null, token: null, isAuthenticated: false }),
+      setAuth: (user, token) => {
+        set({ user, token, isAuthenticated: true });
+      },
+      clearAuth: () => {
+        set({ user: null, token: null, isAuthenticated: false });
+      },
+      logout: () => {
+        localStorage.removeItem("token");
+        set({ user: null, token: null, isAuthenticated: false });
+        window.location.href = "/login";
+      },
       updateUserName: (name) =>
-        set((state) =>
-          state.user ? { user: { ...state.user, name } } : {}
-        ),
+        set((state) => (state.user ? { user: { ...state.user, name } } : {})),
     }),
     {
-      name: 'auth-storage',
+      name: "auth-storage",
       version: 1,
-      storage: createJSONStorage(() => createVersionedStorage('auth-storage', 1)),
+      storage: createJSONStorage(() => createVersionedStorage("auth-storage", 1)),
+      onRehydrateStorage: () => (state) => {
+        logger.debug("[AuthStore] Rehydration complete", {
+          hasUser: !!state?.user,
+          hasToken: !!state?.token,
+          isAuthenticated: state?.isAuthenticated,
+        });
+      },
     }
   )
 );
@@ -41,3 +57,4 @@ export const useAuthStore = create<AuthState>()(
 export const selectIsAuthenticated = (state: AuthState) => state.isAuthenticated;
 export const selectUser = (state: AuthState) => state.user;
 export const selectToken = (state: AuthState) => state.token;
+export const selectLogout = (state: AuthState) => state.logout;

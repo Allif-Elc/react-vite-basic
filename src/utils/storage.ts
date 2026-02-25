@@ -1,6 +1,10 @@
-import { StateStorage } from 'zustand/middleware';
+import { StateStorage } from "zustand/middleware";
+import { logger } from "./logger";
 
-export const createVersionedStorage = (storageName: string, currentVersion: number): StateStorage => {
+export const createVersionedStorage = (
+  storageName: string,
+  currentVersion: number
+): StateStorage => {
   const storageKey = `z-${storageName}`;
 
   return {
@@ -11,16 +15,13 @@ export const createVersionedStorage = (storageName: string, currentVersion: numb
       if (item) {
         try {
           const parsed = JSON.parse(item);
-
           // Check version mismatch
           if (parsed.version !== undefined && parsed.version !== currentVersion) {
-            console.log(`[Storage] Version mismatch for ${key}. Clearing old data (v${parsed.version} -> v${currentVersion})`);
             localStorage.removeItem(key);
             return null;
           }
-        } catch {
+        } catch (e) {
           // Invalid JSON, clear it
-          console.log(`[Storage] Invalid data for ${key}. Clearing.`);
           localStorage.removeItem(key);
           return null;
         }
@@ -46,9 +47,9 @@ export const clearOldStorage = (storageName: string) => {
   if (item) {
     try {
       const parsed = JSON.parse(item);
-      console.log(`[Storage] Current data for ${key}:`, parsed);
+      logger.debug(`[Storage] Current data for ${key}`, { hasData: !!parsed });
     } catch {
-      console.log(`[Storage] Data for ${key} is not valid JSON`);
+      logger.debug(`[Storage] Data for ${key} is not valid JSON`);
     }
   }
 };
@@ -58,11 +59,11 @@ export const clearAllAppStorage = () => {
 
   for (let i = 0; i < localStorage.length; i++) {
     const key = localStorage.key(i);
-    if (key && (key.startsWith('auth-') || key.startsWith('project-') || key.startsWith('z-'))) {
+    if (key && (key.startsWith("auth-") || key.startsWith("project-") || key.startsWith("z-"))) {
       keysToRemove.push(key);
     }
   }
 
-  keysToRemove.forEach(key => localStorage.removeItem(key));
-  console.log(`[Storage] Cleared ${keysToRemove.length} storage item(s)`);
+  keysToRemove.forEach((key) => localStorage.removeItem(key));
+  logger.debug(`[Storage] Cleared storage items`, { count: keysToRemove.length });
 };
