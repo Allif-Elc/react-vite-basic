@@ -1,12 +1,12 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import { RESTForm } from '../../components/editor/RESTForm';
-import { restAPISchema } from '../../schemas/restSchema';
-import type { RestAPI } from '../../types/api';
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { BrowserRouter } from "react-router-dom";
+import { RESTForm } from "../../components/editor/RESTForm";
+import { restAPISchema } from "../../schemas/restSchema";
+import type { RestAPI } from "../../types/api";
 
 // Mock stores
-vi.mock('../../stores/toastStore', () => ({
+vi.mock("../../stores/toastStore", () => ({
   useToastStore: () => ({
     addToast: vi.fn(),
     removeToast: vi.fn(),
@@ -15,7 +15,7 @@ vi.mock('../../stores/toastStore', () => ({
   }),
 }));
 
-vi.mock('../../stores/formStore', () => ({
+vi.mock("../../stores/formStore", () => ({
   useFormDraftStore: () => ({
     saveDraft: vi.fn(),
     loadDraft: vi.fn(() => null),
@@ -24,7 +24,7 @@ vi.mock('../../stores/formStore', () => ({
   }),
 }));
 
-vi.mock('../../utils/jsonFormatter', () => ({
+vi.mock("../../utils/jsonFormatter", () => ({
   formatJSON: vi.fn(async (json: string) => {
     try {
       const parsed = JSON.parse(json);
@@ -35,14 +35,14 @@ vi.mock('../../utils/jsonFormatter', () => ({
     } catch {
       return {
         formatted: json,
-        error: 'Invalid JSON',
+        error: "Invalid JSON",
       };
     }
   }),
 }));
 
 // Mock complex child components
-vi.mock('../../components/api/APITabs', () => ({
+vi.mock("../../components/api/APITabs", () => ({
   APITabs: ({ tabs, defaultTab }: any) => {
     const [activeTab, setActiveTab] = React.useState(defaultTab || tabs[0]?.id);
     const activeTabData = tabs.find((t: any) => t.id === activeTab);
@@ -68,168 +68,159 @@ vi.mock('../../components/api/APITabs', () => ({
   },
 }));
 
-vi.mock('../../components/api/ParameterList', () => ({
+vi.mock("../../components/api/ParameterList", () => ({
   ParameterList: ({ label }: any) => <div data-testid="parameter-list">{label}</div>,
 }));
 
-vi.mock('../../components/api/ResponseViewer', () => ({
+vi.mock("../../components/api/ResponseViewer", () => ({
   ResponseViewer: ({ name }: any) => <div data-testid="response-viewer">{name}</div>,
 }));
 
-import React from 'react';
+import React from "react";
 
 const renderWithRouter = (component: React.ReactNode) => {
   return render(<BrowserRouter>{component}</BrowserRouter>);
 };
 
-describe('RESTForm Component', () => {
+describe("RESTForm Component", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  describe('Rendering', () => {
-    it('renders all form fields', () => {
+  describe("Rendering", () => {
+    it("renders all form fields", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
       expect(screen.getByLabelText(/api name/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/method/i)).toBeInTheDocument();
       expect(screen.getByLabelText(/endpoint/i)).toBeInTheDocument();
-      expect(screen.getByRole('button', { name: /save api/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /save api/i })).toBeInTheDocument();
     });
 
-    it('renders all expected tabs', () => {
+    it("renders all expected tabs", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
-      expect(screen.getByRole('tab', { name: /overview/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /headers/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /path parameters/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /query parameters/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /request body/i })).toBeInTheDocument();
-      expect(screen.getByRole('tab', { name: /responses/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /overview/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /headers/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /path parameters/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /query parameters/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /request body/i })).toBeInTheDocument();
+      expect(screen.getByRole("tab", { name: /responses/i })).toBeInTheDocument();
     });
 
-    it('shows cancel button when onCancel is provided', () => {
+    it("shows cancel button when onCancel is provided", () => {
       const mockOnSubmit = vi.fn();
       const mockOnCancel = vi.fn();
-      renderWithRouter(
-        <RESTForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} projectId={1} />
-      );
+      renderWithRouter(<RESTForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} projectId={1} />);
 
-      expect(screen.getByRole('button', { name: /cancel/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /cancel/i })).toBeInTheDocument();
     });
 
-    it('does not show cancel button when onCancel is not provided', () => {
+    it("does not show cancel button when onCancel is not provided", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
-      expect(screen.queryByRole('button', { name: /cancel/i })).not.toBeInTheDocument();
+      expect(screen.queryByRole("button", { name: /cancel/i })).not.toBeInTheDocument();
     });
 
     it('shows "Saving..." text when isSubmitting is true', () => {
       const mockOnSubmit = vi.fn();
-      renderWithRouter(
-        <RESTForm onSubmit={mockOnSubmit} projectId={1} isSubmitting={true} />
-      );
+      renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} isSubmitting={true} />);
 
       expect(screen.getByText(/saving/i)).toBeInTheDocument();
-      const submitButton = screen.getByRole('button', { name: /saving/i });
+      const submitButton = screen.getByRole("button", { name: /saving/i });
       expect(submitButton).toBeDisabled();
     });
   });
 
-  describe('Edit Mode', () => {
+  describe("Edit Mode", () => {
     const mockInitialData: RestAPI = {
       id_rest_api: 1,
       id_project: 1,
       id_user: 1,
-      name: 'Existing API',
-      description: 'Existing description',
-      method: 'POST',
-      endpoint: '/existing-endpoint',
+      name: "Existing API",
+      description: "Existing description",
+      method: "POST",
+      endpoint: "/existing-endpoint",
       headers: [],
       path_params: [],
       query_params: [],
-      request_body: { type: 'object', properties: {} },
+      request_body: { type: "object", properties: {} },
       responses: {},
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     };
 
-    it('pre-fills form with initialData values', () => {
+    it("pre-fills form with initialData values", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(
-        <RESTForm
-          onSubmit={mockOnSubmit}
-          projectId={1}
-          initialData={mockInitialData}
-          restId={1}
-        />
+        <RESTForm onSubmit={mockOnSubmit} projectId={1} initialData={mockInitialData} restId={1} />
       );
 
-      expect(screen.getByLabelText(/api name/i)).toHaveValue('Existing API');
-      expect(screen.getByLabelText(/endpoint/i)).toHaveValue('/existing-endpoint');
+      expect(screen.getByLabelText(/api name/i)).toHaveValue("Existing API");
+      expect(screen.getByLabelText(/endpoint/i)).toHaveValue("/existing-endpoint");
     });
   });
 
-  describe('Form Structure', () => {
-    it('has correct form element with submit handler', () => {
+  describe("Form Structure", () => {
+    it("has correct form element with submit handler", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
-      const form = document.querySelector('form');
+      const form = document.querySelector("form");
       expect(form).toBeInTheDocument();
-      expect(form).toHaveClass('space-y-6');
+      expect(form).toHaveClass("space-y-6");
     });
 
-    it('has all required input fields with proper attributes', () => {
+    it("has all required input fields with proper attributes", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
       const nameInput = screen.getByLabelText(/api name/i);
-      expect(nameInput).toHaveAttribute('type', 'text');
-      expect(nameInput).toHaveAttribute('placeholder', 'Get User Profile');
+      expect(nameInput).toHaveAttribute("type", "text");
+      expect(nameInput).toHaveAttribute("placeholder", "Get User Profile");
 
       const methodSelect = screen.getByLabelText(/method/i);
-      expect(methodSelect).toHaveAttribute('name', 'method');
+      expect(methodSelect).toHaveAttribute("name", "method");
 
       const endpointInput = screen.getByLabelText(/endpoint/i);
-      expect(endpointInput).toHaveAttribute('type', 'text');
-      expect(endpointInput).toHaveAttribute('placeholder', '/api/users/:id');
+      expect(endpointInput).toHaveAttribute("type", "text");
+      expect(endpointInput).toHaveAttribute("placeholder", "/api/users/:id");
     });
   });
 
-  describe('Request Body Tab Content', () => {
-    it('renders request body textarea with correct attributes', () => {
+  describe("Request Body Tab Content", () => {
+    it("renders request body textarea with correct attributes", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={1} />);
 
       // Click on Request Body tab
-      const requestBodyTab = screen.getByRole('tab', { name: /request body/i });
+      const requestBodyTab = screen.getByRole("tab", { name: /request body/i });
       expect(requestBodyTab).toBeInTheDocument();
     });
   });
 
-  describe('Component Props Integration', () => {
-    it('passes projectId correctly for draft persistence', () => {
+  describe("Component Props Integration", () => {
+    it("passes projectId correctly for draft persistence", () => {
       const mockOnSubmit = vi.fn();
       renderWithRouter(<RESTForm onSubmit={mockOnSubmit} projectId={123} />);
 
       // The component should have rendered with the projectId
-      expect(screen.getByRole('button', { name: /save api/i })).toBeInTheDocument();
+      expect(screen.getByRole("button", { name: /save api/i })).toBeInTheDocument();
     });
 
-    it('passes restId correctly for edit mode', () => {
+    it("passes restId correctly for edit mode", () => {
       const mockOnSubmit = vi.fn();
       const mockInitialData: RestAPI = {
         id_rest_api: 1,
         id_project: 1,
         id_user: 1,
-        name: 'Test',
-        description: '',
-        method: 'GET',
-        endpoint: '/test',
+        name: "Test",
+        description: "",
+        method: "GET",
+        endpoint: "/test",
         headers: [],
         path_params: [],
         query_params: [],
@@ -248,17 +239,17 @@ describe('RESTForm Component', () => {
         />
       );
 
-      expect(screen.getByLabelText(/api name/i)).toHaveValue('Test');
+      expect(screen.getByLabelText(/api name/i)).toHaveValue("Test");
     });
   });
 
-  describe('Zod Schema Integration', () => {
-    it('validates name field has min length constraint', () => {
+  describe("Zod Schema Integration", () => {
+    it("validates name field has min length constraint", () => {
       // Valid name
       const validNameResult = restAPISchema.safeParse({
-        name: 'Valid Name',
-        method: 'GET',
-        endpoint: '/test',
+        name: "Valid Name",
+        method: "GET",
+        endpoint: "/test",
         headers: [],
         path_params: [],
         query_params: [],
@@ -268,9 +259,9 @@ describe('RESTForm Component', () => {
 
       // Invalid name (too short)
       const invalidNameResult = restAPISchema.safeParse({
-        name: 'AB',
-        method: 'GET',
-        endpoint: '/test',
+        name: "AB",
+        method: "GET",
+        endpoint: "/test",
         headers: [],
         path_params: [],
         query_params: [],
@@ -279,11 +270,11 @@ describe('RESTForm Component', () => {
       expect(invalidNameResult.success).toBe(false);
     });
 
-    it('validates endpoint field is required', () => {
+    it("validates endpoint field is required", () => {
       const result = restAPISchema.safeParse({
-        name: 'Test API',
-        method: 'GET',
-        endpoint: '',
+        name: "Test API",
+        method: "GET",
+        endpoint: "",
         headers: [],
         path_params: [],
         query_params: [],
@@ -292,61 +283,61 @@ describe('RESTForm Component', () => {
       expect(result.success).toBe(false);
     });
 
-    it('accepts valid request body JSON schema', () => {
+    it("accepts valid request body JSON schema", () => {
       const result = restAPISchema.safeParse({
-        name: 'Test API',
-        method: 'POST',
-        endpoint: '/users',
+        name: "Test API",
+        method: "POST",
+        endpoint: "/users",
         headers: [],
         path_params: [],
         query_params: [],
         request_body: {
-          type: 'object',
+          type: "object",
           properties: {
-            email: { type: 'string' }
-          }
+            email: { type: "string" },
+          },
         },
         responses: {},
       });
       expect(result.success).toBe(true);
     });
 
-    it('accepts empty string as optional request_body', () => {
+    it("accepts empty string as optional request_body", () => {
       const result = restAPISchema.safeParse({
-        name: 'Test API',
-        method: 'GET',
-        endpoint: '/users',
+        name: "Test API",
+        method: "GET",
+        endpoint: "/users",
         headers: [],
         path_params: [],
         query_params: [],
-        request_body: '',
+        request_body: "",
         responses: {},
       });
       expect(result.success).toBe(true);
     });
 
-    it('rejects invalid JSON format in request_body', () => {
+    it("rejects invalid JSON format in request_body", () => {
       const result = restAPISchema.safeParse({
-        name: 'Test API',
-        method: 'POST',
-        endpoint: '/users',
+        name: "Test API",
+        method: "POST",
+        endpoint: "/users",
         headers: [],
         path_params: [],
         query_params: [],
-        request_body: '{invalid json}',
+        request_body: "{invalid json}",
         responses: {},
       });
       expect(result.success).toBe(false);
       if (!result.success) {
-        expect(result.error.errors[0].message).toContain('Invalid JSON format');
+        expect(result.error.errors[0].message).toContain("Invalid JSON format");
       }
     });
 
-    it('rejects valid JSON but invalid schema in request_body', () => {
+    it("rejects valid JSON but invalid schema in request_body", () => {
       const result = restAPISchema.safeParse({
-        name: 'Test API',
-        method: 'POST',
-        endpoint: '/users',
+        name: "Test API",
+        method: "POST",
+        endpoint: "/users",
         headers: [],
         path_params: [],
         query_params: [],

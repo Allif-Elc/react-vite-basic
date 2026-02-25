@@ -1,8 +1,8 @@
-import { useEffect, useCallback, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAPIStore } from '../stores/apiStore';
-import { useToastStore } from '../stores/toastStore';
-import { GRPCForm } from '../components/editor/GRPCForm';
+import { useEffect, useCallback, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAPIStore } from "../stores/apiStore";
+import { useToastStore } from "../stores/toastStore";
+import { GRPCForm } from "../components/editor/GRPCForm";
 
 export default function EditorGRPC() {
   const { id, grpcId } = useParams<{ id?: string; grpcId?: string }>();
@@ -34,31 +34,34 @@ export default function EditorGRPC() {
 
   useEffect(() => {
     if (error) {
-      addToast(error, 'error');
+      addToast(error, "error");
       clearError();
     }
   }, [error, addToast, clearError]);
 
-  const handleSubmit = useCallback(async (data: any) => {
-    try {
-      if (isEditing && grpcId) {
-        await updateGrpcAPI(Number(grpcId), data);
-        addToast('API updated successfully', 'success');
-      } else {
-        await createGrpcAPI(projectId, data);
-        addToast('API created successfully', 'success');
-        navigate(`/projects/${projectId}`);
+  const handleSubmit = useCallback(
+    async (data: any) => {
+      try {
+        if (isEditing && grpcId) {
+          await updateGrpcAPI(Number(grpcId), data);
+          addToast("API updated successfully", "success");
+        } else {
+          await createGrpcAPI(projectId, data);
+          addToast("API created successfully", "success");
+          navigate(`/projects/${projectId}`);
+        }
+      } catch (err) {
+        addToast("Failed to save API", "error");
       }
-    } catch (err) {
-      addToast('Failed to save API', 'error');
-    }
-  }, [isEditing, grpcId, projectId, updateGrpcAPI, createGrpcAPI, navigate, addToast]);
+    },
+    [isEditing, grpcId, projectId, updateGrpcAPI, createGrpcAPI, navigate, addToast]
+  );
 
   const handleCancel = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const title = useMemo(() => (isEditing ? 'Edit gRPC API' : 'Create gRPC API'), [isEditing]);
+  const title = useMemo(() => (isEditing ? "Edit gRPC API" : "Create gRPC API"), [isEditing]);
 
   if (loading && isEditing) {
     return (

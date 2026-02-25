@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { MethodBadge } from '../api/MethodBadge';
-import { CodeBlock } from './CodeBlock';
-import type { RestAPI } from '../../types/api';
+import { memo } from "react";
+import { MethodBadge } from "../api/MethodBadge";
+import { CodeBlock } from "./CodeBlock";
+import type { RestAPI } from "../../types/api";
 
 interface RESTViewerProps {
   api: RestAPI;
@@ -24,7 +24,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Description */}
       {api.description && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Description</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+            Description
+          </h2>
           <p className="text-gray-700">{api.description}</p>
         </div>
       )}
@@ -40,7 +42,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Headers */}
       {headers.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Headers</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Headers
+          </h2>
           <div className="bg-gray-50 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-100">
@@ -62,8 +66,8 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                         <span className="text-gray-500">Optional</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{header.description || '-'}</td>
-                    <td className="px-4 py-2 font-mono text-gray-600">{header.example || '-'}</td>
+                    <td className="px-4 py-2 text-gray-600">{header.description || "-"}</td>
+                    <td className="px-4 py-2 font-mono text-gray-600">{header.example || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -75,7 +79,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Path Parameters */}
       {pathParams.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Path Parameters</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Path Parameters
+          </h2>
           <div className="bg-gray-50 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-100">
@@ -91,7 +97,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                   <tr key={i} className="border-t border-gray-200">
                     <td className="px-4 py-2 font-mono">{param.name}</td>
                     <td className="px-4 py-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{param.type}</span>
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                        {param.type}
+                      </span>
                     </td>
                     <td className="px-4 py-2">
                       {param.required ? (
@@ -100,7 +108,7 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                         <span className="text-gray-500">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{param.description || '-'}</td>
+                    <td className="px-4 py-2 text-gray-600">{param.description || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -112,7 +120,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Query Parameters */}
       {queryParams.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Query Parameters</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Query Parameters
+          </h2>
           <div className="bg-gray-50 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-100">
@@ -128,7 +138,9 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                   <tr key={i} className="border-t border-gray-200">
                     <td className="px-4 py-2 font-mono">{param.name}</td>
                     <td className="px-4 py-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">{param.type}</span>
+                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                        {param.type}
+                      </span>
                     </td>
                     <td className="px-4 py-2">
                       {param.required ? (
@@ -137,7 +149,7 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                         <span className="text-gray-500">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{param.description || '-'}</td>
+                    <td className="px-4 py-2 text-gray-600">{param.description || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -149,31 +161,47 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Request Body */}
       {api.request_body && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Request Body</h2>
-          <CodeBlock code={JSON.stringify(api.request_body, null, 2)} language="json" title="JSON Schema" />
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Request Body
+          </h2>
+          <CodeBlock
+            code={JSON.stringify(api.request_body, null, 2)}
+            language="json"
+            title="JSON Schema"
+          />
         </div>
       )}
 
       {/* Responses */}
       {Object.keys(responses).length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Responses</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Responses
+          </h2>
           <div className="space-y-4">
             {Object.entries(responses).map(([statusCode, response]: [string, any]) => (
               <div key={statusCode} className="border border-gray-200 rounded-lg overflow-hidden">
                 <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 border-b">
-                  <span className={`px-2 py-1 rounded text-sm font-medium ${
-                    parseInt(statusCode) < 300 ? 'bg-green-100 text-green-700' :
-                    parseInt(statusCode) < 400 ? 'bg-yellow-100 text-yellow-700' :
-                    'bg-red-100 text-red-700'
-                  }`}>
+                  <span
+                    className={`px-2 py-1 rounded text-sm font-medium ${
+                      parseInt(statusCode) < 300
+                        ? "bg-green-100 text-green-700"
+                        : parseInt(statusCode) < 400
+                          ? "bg-yellow-100 text-yellow-700"
+                          : "bg-red-100 text-red-700"
+                    }`}
+                  >
                     {statusCode}
                   </span>
-                  <span className="text-gray-700">{response?.description || ''}</span>
+                  <span className="text-gray-700">{response?.description || ""}</span>
                 </div>
                 {response?.body && (
                   <CodeBlock
-                    code={typeof response.body === 'string' ? response.body : JSON.stringify(response.body, null, 2)}
+                    code={
+                      typeof response.body === "string"
+                        ? response.body
+                        : JSON.stringify(response.body, null, 2)
+                    }
                     language="json"
                   />
                 )}
@@ -186,4 +214,4 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
   );
 });
 
-RESTViewer.displayName = 'RESTViewer';
+RESTViewer.displayName = "RESTViewer";

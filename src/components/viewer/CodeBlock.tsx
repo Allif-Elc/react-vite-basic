@@ -1,5 +1,5 @@
-import { memo } from 'react';
-import { Highlight, themes } from 'prism-react-renderer';
+import { memo } from "react";
+import { Highlight, themes } from "prism-react-renderer";
 
 interface CodeBlockProps {
   code: string;
@@ -8,7 +8,8 @@ interface CodeBlockProps {
 }
 
 export const CodeBlock = memo<CodeBlockProps>(({ code, language, title }) => {
-  const prismLanguage = language === 'graphql' ? 'graphql' : language === 'protobuf' ? 'javascript' : 'javascript';
+  const prismLanguage =
+    language === "graphql" ? "graphql" : language === "protobuf" ? "javascript" : "javascript";
 
   return (
     <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
@@ -34,4 +35,4 @@ export const CodeBlock = memo<CodeBlockProps>(({ code, language, title }) => {
   );
 });
 
-CodeBlock.displayName = 'CodeBlock';
+CodeBlock.displayName = "CodeBlock";

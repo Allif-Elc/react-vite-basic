@@ -1,12 +1,12 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 export interface ConfirmDialogOptions {
   title: string;
   message: string;
   confirmText?: string;
   cancelText?: string;
-  variant?: 'danger' | 'default';
+  variant?: "danger" | "default";
 }
 
 interface ConfirmDialogState {
@@ -53,7 +53,7 @@ export const useConfirmDialogStore = create<ConfirmDialogState>()(
         get().closeDialog();
       },
     }),
-    { name: 'ConfirmDialogStore' }
+    { name: "ConfirmDialogStore" }
   )
 );
 

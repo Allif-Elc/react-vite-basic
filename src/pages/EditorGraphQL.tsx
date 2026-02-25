@@ -1,8 +1,8 @@
-import { useEffect, useCallback, useMemo } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useAPIStore } from '../stores/apiStore';
-import { useToastStore } from '../stores/toastStore';
-import { GraphQLForm } from '../components/editor/GraphQLForm';
+import { useEffect, useCallback, useMemo } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useAPIStore } from "../stores/apiStore";
+import { useToastStore } from "../stores/toastStore";
+import { GraphQLForm } from "../components/editor/GraphQLForm";
 
 export default function EditorGraphQL() {
   const { id, graphqlId } = useParams<{ id?: string; graphqlId?: string }>();
@@ -34,31 +34,34 @@ export default function EditorGraphQL() {
 
   useEffect(() => {
     if (error) {
-      addToast(error, 'error');
+      addToast(error, "error");
       clearError();
     }
   }, [error, addToast, clearError]);
 
-  const handleSubmit = useCallback(async (data: any) => {
-    try {
-      if (isEditing && graphqlId) {
-        await updateGraphQLAPI(Number(graphqlId), data);
-        addToast('API updated successfully', 'success');
-      } else {
-        await createGraphQLAPI(projectId, data);
-        addToast('API created successfully', 'success');
-        navigate(`/projects/${projectId}`);
+  const handleSubmit = useCallback(
+    async (data: any) => {
+      try {
+        if (isEditing && graphqlId) {
+          await updateGraphQLAPI(Number(graphqlId), data);
+          addToast("API updated successfully", "success");
+        } else {
+          await createGraphQLAPI(projectId, data);
+          addToast("API created successfully", "success");
+          navigate(`/projects/${projectId}`);
+        }
+      } catch (err) {
+        addToast("Failed to save API", "error");
       }
-    } catch (err) {
-      addToast('Failed to save API', 'error');
-    }
-  }, [isEditing, graphqlId, projectId, updateGraphQLAPI, createGraphQLAPI, navigate, addToast]);
+    },
+    [isEditing, graphqlId, projectId, updateGraphQLAPI, createGraphQLAPI, navigate, addToast]
+  );
 
   const handleCancel = useCallback(() => {
     navigate(-1);
   }, [navigate]);
 
-  const title = useMemo(() => (isEditing ? 'Edit GraphQL API' : 'Create GraphQL API'), [isEditing]);
+  const title = useMemo(() => (isEditing ? "Edit GraphQL API" : "Create GraphQL API"), [isEditing]);
 
   if (loading && isEditing) {
     return (

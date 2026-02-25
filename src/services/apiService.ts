@@ -1,18 +1,27 @@
-import api from './api';
-import type { ApiResponse, RestAPI, GraphQLAPI, GrpcAPI, Project } from '../types/api';
-import { transformProject, transformProjectList } from '../utils/transformers';
-import type { Project as FrontendProject } from '../utils/transformers';
+import api from "./api";
+import type { ApiResponse, RestAPI, GraphQLAPI, GrpcAPI, Project } from "../types/api";
+import { transformProject, transformProjectList } from "../utils/transformers";
+import type { Project as FrontendProject } from "../utils/transformers";
+import { decodeBase64JSON } from "../utils/encoding";
 
 const unwrapResponse = <T>(response: { data: ApiResponse<T> }): T => {
-  if (response.data.status === 'error') {
-    throw new Error(response.data.message || response.data.error || 'Request failed');
+  if (response.data.status === "error") {
+    throw new Error(response.data.message || response.data.error || "Request failed");
   }
   return response.data.data as T;
 };
 
 // Projects
 export const fetchProjects = async (): Promise<FrontendProject[]> => {
-  const response = await api.get<ApiResponse<Project[]>>('/api/v1/projects');
+  const response = await api.get<ApiResponse<Project[]>>("/api/v1/projects");
+  const data = unwrapResponse(response);
+  const projects = Array.isArray(data) ? data : (data as any)?.Data || [];
+  return transformProjectList(projects);
+};
+
+// Optimized: Fetch projects with API stats in single query (eliminates N+1)
+export const fetchProjectsWithStats = async (): Promise<FrontendProject[]> => {
+  const response = await api.get<ApiResponse<Project[]>>("/api/v1/projects/with-stats");
   const data = unwrapResponse(response);
   const projects = Array.isArray(data) ? data : (data as any)?.Data || [];
   return transformProjectList(projects);
@@ -30,7 +39,9 @@ export const fetchProjectBySlug = async (slug: string): Promise<FrontendProject>
   return transformProject(data);
 };
 
-export const fetchProjectAPIStats = async (projectId: number): Promise<{
+export const fetchProjectAPIStats = async (
+  projectId: number
+): Promise<{
   rest: number;
   graphql: number;
   grpc: number;
@@ -53,21 +64,29 @@ const normalizeToArray = <T>(value: T[] | Record<string, T> | null | undefined):
   // Check if all keys are numeric strings
   const allNumeric = entries.every(([key]) => /^\d+$/.test(key));
   if (allNumeric) {
-    return entries
-      .sort((a, b) => parseInt(a[0]) - parseInt(b[0]))
-      .map(([, val]) => val);
+    return entries.sort((a, b) => parseInt(a[0]) - parseInt(b[0])).map(([, val]) => val);
   }
   return Object.values(value);
 };
 
 // Normalize RestAPI data to ensure proper array structures
-const normalizeRestAPI = (api: RestAPI): RestAPI => ({
-  ...api,
-  headers: normalizeToArray(api.headers),
-  path_params: normalizeToArray(api.path_params),
-  query_params: normalizeToArray(api.query_params),
-  responses: api.responses || {},
-});
+const normalizeRestAPI = (api: RestAPI): RestAPI => {
+  // Decode base64 fields first, then normalize to arrays
+  const decodedHeaders = decodeBase64JSON<any[]>(api.headers);
+  const decodedPathParams = decodeBase64JSON<any[]>(api.path_params);
+  const decodedQueryParams = decodeBase64JSON<any[]>(api.query_params);
+  const decodedResponses = decodeBase64JSON<Record<string, any>>(api.responses);
+  const decodedRequestBody = decodeBase64JSON<any>(api.request_body);
+
+  return {
+    ...api,
+    headers: normalizeToArray(decodedHeaders),
+    path_params: normalizeToArray(decodedPathParams),
+    query_params: normalizeToArray(decodedQueryParams),
+    responses: decodedResponses || {},
+    request_body: decodedRequestBody,
+  };
+};
 
 // REST APIs
 export const fetchRestAPIs = async (projectId: number): Promise<RestAPI[]> => {
@@ -83,8 +102,14 @@ export const fetchRestAPI = async (apiId: number): Promise<RestAPI> => {
   return normalizeRestAPI(data);
 };
 
-export const createRestAPI = async (projectId: number, data: Partial<RestAPI>): Promise<RestAPI> => {
-  const response = await api.post<ApiResponse<RestAPI>>(`/api/v1/projects/${projectId}/rest-apis`, data);
+export const createRestAPI = async (
+  projectId: number,
+  data: Partial<RestAPI>
+): Promise<RestAPI> => {
+  const response = await api.post<ApiResponse<RestAPI>>(
+    `/api/v1/projects/${projectId}/rest-apis`,
+    data
+  );
   return unwrapResponse(response);
 };
 
@@ -99,7 +124,9 @@ export const deleteRestAPI = async (apiId: number): Promise<void> => {
 
 // GraphQL APIs
 export const fetchGraphQLAPIs = async (projectId: number): Promise<GraphQLAPI[]> => {
-  const response = await api.get<ApiResponse<GraphQLAPI[]>>(`/api/v1/projects/${projectId}/graphql-apis`);
+  const response = await api.get<ApiResponse<GraphQLAPI[]>>(
+    `/api/v1/projects/${projectId}/graphql-apis`
+  );
   const data = unwrapResponse(response);
   const apis = Array.isArray(data) ? data : (data as any)?.Data || [];
   return apis.map((api: GraphQLAPI) => ({
@@ -119,12 +146,21 @@ export const fetchGraphQLAPI = async (apiId: number): Promise<GraphQLAPI> => {
   };
 };
 
-export const createGraphQLAPI = async (projectId: number, data: Partial<GraphQLAPI>): Promise<GraphQLAPI> => {
-  const response = await api.post<ApiResponse<GraphQLAPI>>(`/api/v1/projects/${projectId}/graphql-apis`, data);
+export const createGraphQLAPI = async (
+  projectId: number,
+  data: Partial<GraphQLAPI>
+): Promise<GraphQLAPI> => {
+  const response = await api.post<ApiResponse<GraphQLAPI>>(
+    `/api/v1/projects/${projectId}/graphql-apis`,
+    data
+  );
   return unwrapResponse(response);
 };
 
-export const updateGraphQLAPI = async (apiId: number, data: Partial<GraphQLAPI>): Promise<GraphQLAPI> => {
+export const updateGraphQLAPI = async (
+  apiId: number,
+  data: Partial<GraphQLAPI>
+): Promise<GraphQLAPI> => {
   const response = await api.put<ApiResponse<GraphQLAPI>>(`/api/v1/graphql-apis/${apiId}`, data);
   return unwrapResponse(response);
 };
@@ -157,8 +193,14 @@ export const fetchGrpcAPI = async (apiId: number): Promise<GrpcAPI> => {
   };
 };
 
-export const createGrpcAPI = async (projectId: number, data: Partial<GrpcAPI>): Promise<GrpcAPI> => {
-  const response = await api.post<ApiResponse<GrpcAPI>>(`/api/v1/projects/${projectId}/grpc-apis`, data);
+export const createGrpcAPI = async (
+  projectId: number,
+  data: Partial<GrpcAPI>
+): Promise<GrpcAPI> => {
+  const response = await api.post<ApiResponse<GrpcAPI>>(
+    `/api/v1/projects/${projectId}/grpc-apis`,
+    data
+  );
   return unwrapResponse(response);
 };
 
@@ -172,13 +214,17 @@ export const deleteGrpcAPI = async (apiId: number): Promise<void> => {
 };
 
 // Public APIs (for Viewer)
-export const fetchPublicAPIs = async (slug: string): Promise<{
+export const fetchPublicAPIs = async (
+  slug: string
+): Promise<{
   project: FrontendProject;
   rest: RestAPI[];
   graphql: GraphQLAPI[];
   grpc: GrpcAPI[];
 }> => {
-  const response = await api.get<ApiResponse<{ project: Project; rest: RestAPI[]; graphql: GraphQLAPI[]; grpc: GrpcAPI[] }>>(`/api/v1/public/projects/${slug}/full`);
+  const response = await api.get<
+    ApiResponse<{ project: Project; rest: RestAPI[]; graphql: GraphQLAPI[]; grpc: GrpcAPI[] }>
+  >(`/api/v1/public/projects/${slug}/full`);
   const data = unwrapResponse(response);
   return {
     ...data,

@@ -1,13 +1,16 @@
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useNavigate } from 'react-router-dom';
-import { useToastStore } from '../stores/toastStore';
-import api from '../services/api';
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useNavigate } from "react-router-dom";
+import { useToastStore } from "../stores/toastStore";
+import api from "../services/api";
 
 const projectSchema = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters').max(100, 'Name must not exceed 100 characters'),
-  description: z.string().max(500, 'Description must not exceed 500 characters').optional(),
+  name: z
+    .string()
+    .min(3, "Name must be at least 3 characters")
+    .max(100, "Name must not exceed 100 characters"),
+  description: z.string().max(500, "Description must not exceed 500 characters").optional(),
 });
 
 type ProjectFormData = z.infer<typeof projectSchema>;
@@ -21,18 +24,18 @@ export default function CreateProject() {
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useForm<ProjectFormData>({
-    mode: 'onBlur',
+    mode: "onBlur",
     resolver: zodResolver(projectSchema),
     delayError: 300,
   });
 
   const onSubmit = async (data: ProjectFormData) => {
     try {
-      await api.post('/api/v1/projects', data);
-      addToast('Project created successfully', 'success');
-      navigate('/');
+      await api.post("/api/v1/projects", data);
+      addToast("Project created successfully", "success");
+      navigate("/");
     } catch {
-      addToast('Failed to create project', 'error');
+      addToast("Failed to create project", "error");
     }
   };
 
@@ -46,15 +49,13 @@ export default function CreateProject() {
             Project Name *
           </label>
           <input
-            {...register('name')}
+            {...register("name")}
             type="text"
             id="name"
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="My Awesome Project"
           />
-          {errors.name && (
-            <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>
-          )}
+          {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
         </div>
 
         <div>
@@ -62,7 +63,7 @@ export default function CreateProject() {
             Description
           </label>
           <textarea
-            {...register('description')}
+            {...register("description")}
             id="description"
             rows={4}
             className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -79,7 +80,7 @@ export default function CreateProject() {
             disabled={isSubmitting}
             className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            {isSubmitting ? 'Creating...' : 'Create Project'}
+            {isSubmitting ? "Creating..." : "Create Project"}
           </button>
           <button
             type="button"

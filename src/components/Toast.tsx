@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useToastStore } from '../stores/toastStore';
+import { useEffect } from "react";
+import { useToastStore } from "../stores/toastStore";
 
 export const Toast = () => {
   const { toasts, removeToast } = useToastStore();
@@ -21,9 +21,7 @@ export const Toast = () => {
         <div
           key={toast.id}
           className={`flex items-center justify-between px-4 py-3 rounded-lg shadow-lg min-w-[300px] ${
-            toast.type === 'success'
-              ? 'bg-green-500 text-white'
-              : 'bg-red-500 text-white'
+            toast.type === "success" ? "bg-green-500 text-white" : "bg-red-500 text-white"
           }`}
         >
           <span>{toast.message}</span>

@@ -1,9 +1,9 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import type { RestAPIFormData } from '../schemas/restSchema';
-import { createVersionedStorage } from '../utils/storage';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import type { RestAPIFormData } from "../schemas/restSchema";
+import { createVersionedStorage } from "../utils/storage";
 
-const versionedStorage = createVersionedStorage('form-draft-storage', 1);
+const versionedStorage = createVersionedStorage("form-draft-storage", 1);
 
 const customStorage = {
   getItem: (name: string) => {
@@ -47,7 +47,7 @@ export const useFormDraftStore = create<FormDraftState>()(
         }),
     }),
     {
-      name: 'form-draft-storage',
+      name: "form-draft-storage",
       version: 1,
       storage: customStorage as any,
     }

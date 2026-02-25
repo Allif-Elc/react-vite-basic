@@ -1,7 +1,11 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import { fetchProjects as fetchProjectsFromAPI, deleteProject as deleteProjectFromAPI } from '../services/apiService';
-import type { Project } from '../utils/transformers';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import {
+  fetchProjectsWithStats as fetchProjectsFromAPI,
+  deleteProject as deleteProjectFromAPI,
+} from "../services/apiService";
+import type { Project } from "../utils/transformers";
+import { isAuthError } from "../services/errors";
 
 interface ProjectState {
   projects: Project[];
@@ -27,10 +31,14 @@ export const useProjectStore = create<ProjectState>()(
           const projects = await fetchProjectsFromAPI();
           set({ projects, loading: false });
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to fetch projects',
-            loading: false,
-          });
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to fetch projects",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
         }
       },
       deleteProject: async (projectId: number) => {
@@ -42,17 +50,21 @@ export const useProjectStore = create<ProjectState>()(
             loading: false,
           }));
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to delete project',
-            loading: false,
-          });
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to delete project",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
           throw error;
         }
       },
       setCurrentProject: (project) => set({ currentProject: project }),
       clearError: () => set({ error: null }),
     }),
-    { name: 'ProjectStore' }
+    { name: "ProjectStore" }
   )
 );
 

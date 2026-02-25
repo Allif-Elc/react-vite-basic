@@ -1,15 +1,15 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
 
 export interface Toast {
   id: string;
   message: string;
-  type: 'success' | 'error';
+  type: "success" | "error";
 }
 
 interface ToastStore {
   toasts: Toast[];
-  addToast: (message: string, type: 'success' | 'error') => void;
+  addToast: (message: string, type: "success" | "error") => void;
   removeToast: (id: string) => void;
   clearToasts: () => void;
 }
@@ -20,10 +20,7 @@ export const useToastStore = create<ToastStore>()(
       toasts: [],
       addToast: (message, type) =>
         set((state) => ({
-          toasts: [
-            ...state.toasts,
-            { id: Date.now().toString(), message, type },
-          ],
+          toasts: [...state.toasts, { id: Date.now().toString(), message, type }],
         })),
       removeToast: (id) =>
         set((state) => ({
@@ -31,6 +28,6 @@ export const useToastStore = create<ToastStore>()(
         })),
       clearToasts: () => set({ toasts: [] }),
     }),
-    { name: 'ToastStore' }
+    { name: "ToastStore" }
   )
 );

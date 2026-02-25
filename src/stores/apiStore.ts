@@ -1,7 +1,8 @@
-import { create } from 'zustand';
-import { devtools } from 'zustand/middleware';
-import type { RestAPI, GraphQLAPI, GrpcAPI } from '../types/api';
-import * as apiService from '../services/apiService';
+import { create } from "zustand";
+import { devtools } from "zustand/middleware";
+import type { RestAPI, GraphQLAPI, GrpcAPI } from "../types/api";
+import * as apiService from "../services/apiService";
+import { isAuthError } from "../services/errors";
 
 interface APIState {
   // REST APIs
@@ -37,7 +38,7 @@ interface APIState {
   updateGrpcAPI: (apiId: number, data: Partial<GrpcAPI>) => Promise<void>;
   deleteGrpcAPI: (apiId: number) => Promise<void>;
 
-  setCurrentAPI: (type: 'rest' | 'graphql' | 'grpc', api: any) => void;
+  setCurrentAPI: (type: "rest" | "graphql" | "grpc", api: any) => void;
   clearCurrentAPI: () => void;
   clearError: () => void;
 }
@@ -64,10 +65,15 @@ export const useAPIStore = create<APIState>()(
           ]);
           set({ restAPIs: rest, graphqlAPIs: graphql, grpcAPIs: grpc, loading: false });
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to fetch APIs',
-            loading: false,
-          });
+          // Don't set error for auth errors (401) - auto-redirect will handle it
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to fetch APIs",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
         }
       },
 
@@ -77,10 +83,14 @@ export const useAPIStore = create<APIState>()(
           const api = await apiService.fetchRestAPI(apiId);
           set({ currentRestAPI: api, loading: false });
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to fetch API',
-            loading: false,
-          });
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to fetch API",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
         }
       },
 
@@ -90,10 +100,14 @@ export const useAPIStore = create<APIState>()(
           const api = await apiService.fetchGraphQLAPI(apiId);
           set({ currentGraphQLAPI: api, loading: false });
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to fetch API',
-            loading: false,
-          });
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to fetch API",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
         }
       },
 
@@ -103,10 +117,14 @@ export const useAPIStore = create<APIState>()(
           const api = await apiService.fetchGrpcAPI(apiId);
           set({ currentGrpcAPI: api, loading: false });
         } catch (error) {
-          set({
-            error: error instanceof Error ? error.message : 'Failed to fetch API',
-            loading: false,
-          });
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to fetch API",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
         }
       },
 
@@ -141,7 +159,8 @@ export const useAPIStore = create<APIState>()(
         const api = await apiService.updateGraphQLAPI(apiId, data);
         set((state) => ({
           graphqlAPIs: state.graphqlAPIs.map((a) => (a.id_graphql_api === apiId ? api : a)),
-          currentGraphQLAPI: state.currentGraphQLAPI?.id_graphql_api === apiId ? api : state.currentGraphQLAPI,
+          currentGraphQLAPI:
+            state.currentGraphQLAPI?.id_graphql_api === apiId ? api : state.currentGraphQLAPI,
         }));
       },
 
@@ -174,8 +193,8 @@ export const useAPIStore = create<APIState>()(
       },
 
       setCurrentAPI: (type, api) => {
-        if (type === 'rest') set({ currentRestAPI: api });
-        else if (type === 'graphql') set({ currentGraphQLAPI: api });
+        if (type === "rest") set({ currentRestAPI: api });
+        else if (type === "graphql") set({ currentGraphQLAPI: api });
         else set({ currentGrpcAPI: api });
       },
 
@@ -185,7 +204,7 @@ export const useAPIStore = create<APIState>()(
 
       clearError: () => set({ error: null }),
     }),
-    { name: 'APIStore' }
+    { name: "APIStore" }
   )
 );
 

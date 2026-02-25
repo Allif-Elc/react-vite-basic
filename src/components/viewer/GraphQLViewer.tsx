@@ -1,7 +1,7 @@
-import { memo } from 'react';
-import { MethodBadge } from '../api/MethodBadge';
-import { CodeBlock } from './CodeBlock';
-import type { GraphQLAPI } from '../../types/api';
+import { memo } from "react";
+import { MethodBadge } from "../api/MethodBadge";
+import { CodeBlock } from "./CodeBlock";
+import type { GraphQLAPI } from "../../types/api";
 
 interface GraphQLViewerProps {
   api: GraphQLAPI;
@@ -22,14 +22,18 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Description */}
       {api.description && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Description</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+            Description
+          </h2>
           <p className="text-gray-700">{api.description}</p>
         </div>
       )}
 
       {/* Return Type */}
       <div>
-        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Return Type</h2>
+        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+          Return Type
+        </h2>
         <code className="px-3 py-2 bg-purple-50 text-purple-700 rounded-lg text-sm font-mono">
           {api.return_type}
         </code>
@@ -38,7 +42,9 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Arguments */}
       {args.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Arguments</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Arguments
+          </h2>
           <div className="bg-gray-50 rounded-lg overflow-hidden">
             <table className="w-full text-sm">
               <thead className="bg-gray-100">
@@ -55,7 +61,9 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
                   <tr key={i} className="border-t border-gray-200">
                     <td className="px-4 py-2 font-mono">{arg.name}</td>
                     <td className="px-4 py-2">
-                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">{arg.type}</span>
+                      <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
+                        {arg.type}
+                      </span>
                     </td>
                     <td className="px-4 py-2">
                       {arg.required ? (
@@ -64,9 +72,9 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
                         <span className="text-gray-500">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{arg.description || '-'}</td>
+                    <td className="px-4 py-2 text-gray-600">{arg.description || "-"}</td>
                     <td className="px-4 py-2 font-mono text-gray-600">
-                      {arg.default_value !== undefined ? String(arg.default_value) : '-'}
+                      {arg.default_value !== undefined ? String(arg.default_value) : "-"}
                     </td>
                   </tr>
                 ))}
@@ -79,7 +87,9 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Examples */}
       {examples.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">Examples</h2>
+          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+            Examples
+          </h2>
           <div className="space-y-4">
             {examples.map((example, i) => (
               <div key={i} className="border border-gray-200 rounded-lg overflow-hidden">
@@ -119,4 +129,4 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
   );
 });
 
-GraphQLViewer.displayName = 'GraphQLViewer';
+GraphQLViewer.displayName = "GraphQLViewer";
