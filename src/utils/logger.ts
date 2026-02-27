@@ -108,7 +108,10 @@ class Logger {
 
   api(method: string, url: string, data?: unknown) {
     if (isDev) {
-      const { message: redactedUrl, args: [sanitizedData] } = this.redactPII(url, data ? [data] : []);
+      const {
+        message: redactedUrl,
+        args: [sanitizedData],
+      } = this.redactPII(url, data ? [data] : []);
       console.group(`API ${method} ${redactedUrl}`);
       if (sanitizedData) console.log("Request:", sanitizedData);
       console.groupEnd();
@@ -117,7 +120,10 @@ class Logger {
 
   apiResponse(method: string, url: string, response: unknown) {
     if (isDev) {
-      const { message: redactedUrl, args: [sanitizedResponse] } = this.redactPII(url, [response]);
+      const {
+        message: redactedUrl,
+        args: [sanitizedResponse],
+      } = this.redactPII(url, [response]);
       console.groupCollapsed(`API ${method} ${redactedUrl}`);
       console.log("Response:", sanitizedResponse);
       console.groupEnd();
@@ -125,7 +131,10 @@ class Logger {
   }
 
   apiError(method: string, url: string, error: unknown) {
-    const { message: redactedUrl, args: [sanitizedError] } = this.redactPII(url, [error]);
+    const {
+      message: redactedUrl,
+      args: [sanitizedError],
+    } = this.redactPII(url, [error]);
     console.group(`API ERROR ${method} ${redactedUrl}`);
     console.error("Error:", sanitizedError);
     console.groupEnd();
