@@ -28,6 +28,10 @@ import type {
   PolicyListResponse,
   PolicyResponse,
   UserListResponse,
+  UserAttributeDetail,
+  CreateUserAttributeRequest,
+  UpdateUserAttributeRequest,
+  UserAttributeListResponse,
 } from "../types/abac";
 import { logger } from "../utils/logger";
 
@@ -208,6 +212,51 @@ export const deletePolicy = async (policyId: number): Promise<void> => {
 // Users
 export const fetchUsers = async (): Promise<User[]> => {
   const response = await api.get<UserListResponse>("/api/v1/users");
-  const data = unwrapResponse<User[]>(response);
-  return Array.isArray(data) ? data : [];
+  const data = unwrapResponse<{ Data: User[]; Page: number; Size: number; StartRow: number; EndRow: number; NextCursor: number }>(response);
+  return Array.isArray(data?.Data) ? data.Data : [];
+};
+
+// User Attributes
+export const fetchUserAttributes = async (userId?: number): Promise<UserAttributeDetail[]> => {
+  const url = userId
+    ? `/api/v1/permissions/user-attributes?user_id=${userId}`
+    : "/api/v1/permissions/user-attributes";
+  logger.api("GET", url);
+  const response = await api.get<UserAttributeListResponse>(url);
+  const data = unwrapResponse<UserAttributeDetail[]>(response);
+  const result = Array.isArray(data) ? data : [];
+  logger.apiResponse("GET", url, { count: result.length });
+  return result;
+};
+
+export const fetchUserAttribute = async (id: number): Promise<UserAttributeDetail> => {
+  const response = await api.get<UserAttributeListResponse>(
+    `/api/v1/permissions/user-attributes/${id}`
+  );
+  return unwrapResponse<UserAttributeDetail>(response);
+};
+
+export const createUserAttribute = async (
+  data: CreateUserAttributeRequest
+): Promise<UserAttributeDetail> => {
+  const response = await api.post<UserAttributeListResponse>(
+    "/api/v1/permissions/user-attributes",
+    data
+  );
+  return unwrapResponse<UserAttributeDetail>(response);
+};
+
+export const updateUserAttribute = async (
+  id: number,
+  data: UpdateUserAttributeRequest
+): Promise<UserAttributeDetail> => {
+  const response = await api.put<UserAttributeListResponse>(
+    `/api/v1/permissions/user-attributes/${id}`,
+    data
+  );
+  return unwrapResponse<UserAttributeDetail>(response);
+};
+
+export const deleteUserAttribute = async (id: number): Promise<void> => {
+  await api.delete(`/api/v1/permissions/user-attributes/${id}`);
 };
