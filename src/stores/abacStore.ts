@@ -23,6 +23,10 @@ import {
   updatePolicy,
   deletePolicy,
   fetchUsers,
+  fetchUserAttributes,
+  createUserAttribute,
+  updateUserAttribute,
+  deleteUserAttribute,
 } from "../services/abacService";
 import type {
   Attribute,
@@ -40,6 +44,9 @@ import type {
   Policy,
   CreatePolicyRequest,
   UpdatePolicyRequest,
+  UserAttributeDetail,
+  CreateUserAttributeRequest,
+  UpdateUserAttributeRequest,
 } from "../types/abac";
 import { logger } from "../utils/logger";
 
@@ -50,6 +57,7 @@ interface ABACState {
   userPolicies: UserPolicyDetail[];
   policies: Policy[];
   users: Array<{ id_user: number; name: string; email: string }>;
+  userAttributes: UserAttributeDetail[];
   loading: boolean;
   error: string | null;
   fetchAttributes: () => Promise<void>;
@@ -74,6 +82,10 @@ interface ABACState {
   updatePolicy: (id: number, data: UpdatePolicyRequest) => Promise<void>;
   deletePolicy: (id: number) => Promise<void>;
   fetchUsers: () => Promise<void>;
+  fetchUserAttributes: (userId?: number) => Promise<void>;
+  createUserAttribute: (data: CreateUserAttributeRequest) => Promise<void>;
+  updateUserAttribute: (id: number, data: UpdateUserAttributeRequest) => Promise<void>;
+  deleteUserAttribute: (id: number) => Promise<void>;
   clearError: () => void;
 }
 
@@ -86,6 +98,7 @@ export const useABACStore = create<ABACState>()(
       userPolicies: [],
       policies: [],
       users: [],
+      userAttributes: [],
       loading: false,
       error: null,
       fetchAttributes: async () => {
@@ -418,6 +431,65 @@ export const useABACStore = create<ABACState>()(
           });
         }
       },
+      fetchUserAttributes: async (userId?: number) => {
+        logger.debug("[abacStore] fetchUserAttributes started", { userId });
+        set({ loading: true, error: null });
+        try {
+          const userAttributes = await fetchUserAttributes(userId);
+          set({ userAttributes, loading: false });
+          logger.debug("[abacStore] fetchUserAttributes complete", { count: userAttributes.length });
+        } catch (error) {
+          logger.error("[abacStore] Error fetching user attributes", error);
+          set({
+            error: error instanceof Error ? error.message : "Failed to fetch user attributes",
+            loading: false,
+          });
+        }
+      },
+      createUserAttribute: async (data) => {
+        set({ loading: true, error: null });
+        try {
+          await createUserAttribute(data);
+          await get().fetchUserAttributes();
+          set({ loading: false });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : "Failed to create user attribute",
+            loading: false,
+          });
+          throw error;
+        }
+      },
+      updateUserAttribute: async (id, data) => {
+        set({ loading: true, error: null });
+        try {
+          await updateUserAttribute(id, data);
+          await get().fetchUserAttributes();
+          set({ loading: false });
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : "Failed to update user attribute",
+            loading: false,
+          });
+          throw error;
+        }
+      },
+      deleteUserAttribute: async (id) => {
+        set({ loading: true, error: null });
+        try {
+          await deleteUserAttribute(id);
+          set((state) => ({
+            userAttributes: state.userAttributes.filter((ua) => ua.id_user_attribute !== id),
+            loading: false,
+          }));
+        } catch (error) {
+          set({
+            error: error instanceof Error ? error.message : "Failed to delete user attribute",
+            loading: false,
+          });
+          throw error;
+        }
+      },
       clearError: () => set({ error: null }),
     }),
     { name: "ABACStore" }
@@ -430,5 +502,6 @@ export const selectPermissions = (state: ABACState) => state.permissions;
 export const selectUserPolicies = (state: ABACState) => state.userPolicies;
 export const selectPolicies = (state: ABACState) => state.policies;
 export const selectUsers = (state: ABACState) => state.users;
+export const selectUserAttributes = (state: ABACState) => state.userAttributes;
 export const selectABACLoading = (state: ABACState) => state.loading;
 export const selectABACError = (state: ABACState) => state.error;
