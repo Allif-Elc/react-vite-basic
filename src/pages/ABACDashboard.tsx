@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { PageSkeleton } from "../components/Skeleton";
-import { Shield, FileText, UserCog, ChevronRight } from "lucide-react";
+import { Shield, FileText, UserCog, Users, ChevronRight } from "lucide-react";
 
 const navItems = [
   { path: "", label: "Attributes", icon: Shield },
@@ -9,6 +9,7 @@ const navItems = [
   { path: "permissions", label: "Permissions", icon: Shield },
   { path: "policies", label: "Policies", icon: FileText },
   { path: "user-policies", label: "User Policies", icon: UserCog },
+  { path: "user-attributes", label: "User Attributes", icon: Users },
 ] as const;
 
 export default function ABACDashboard() {

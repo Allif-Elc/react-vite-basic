@@ -22,6 +22,7 @@ const ResourcesList = lazy(() => import("./pages/ResourcesList"));
 const PermissionsList = lazy(() => import("./pages/PermissionsList"));
 const PoliciesList = lazy(() => import("./pages/PoliciesList"));
 const UserPoliciesPage = lazy(() => import("./pages/UserPoliciesPage"));
+const UserAttributesList = lazy(() => import("./pages/UserAttributesList"));
 const Unauthorized = lazy(() => import("./pages/Unauthorized"));
 import { ProtectedRoute } from "./components/auth/ProtectedRoute";
 
@@ -72,6 +73,7 @@ function App() {
                 <Route path="permissions" element={<PermissionsList />} />
                 <Route path="policies" element={<PoliciesList />} />
                 <Route path="user-policies" element={<UserPoliciesPage />} />
+                <Route path="user-attributes" element={<UserAttributesList />} />
               </Route>
               <Route path="projects/new" element={<CreateProject />} />
               <Route path="projects/:id" element={<ProjectDetail />} />

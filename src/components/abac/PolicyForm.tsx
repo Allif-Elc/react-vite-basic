@@ -1,8 +1,8 @@
-import { memo, useEffect, useState, useCallback } from "react";
+import { memo, useEffect, useState, useCallback, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { policySchema, policyRuleSchema, type PolicyFormData } from "../../schemas/abacSchema";
-import { useABACStore } from "../../stores/abacStore";
+import { useABACStore, selectAttributes, selectResources } from "../../stores/abacStore";
 import { useToastStore } from "../../stores/toastStore";
 import { X, FileText, Code, Plus, Trash2, Type } from "lucide-react";
 import type { Policy } from "../../types/abac";
@@ -16,11 +16,26 @@ interface PolicyFormProps {
 type TabType = "form" | "json";
 
 export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSuccess }) => {
-  const { createPolicy, updatePolicy, fetchPolicies } = useABACStore();
+  const { createPolicy, updatePolicy, fetchPolicies, fetchAttributes, fetchResources } = useABACStore();
+  const attributes = useABACStore(selectAttributes);
+  const resources = useABACStore(selectResources);
   const { addToast } = useToastStore();
   const [activeTab, setActiveTab] = useState<TabType>("form");
   const [jsonInput, setJsonInput] = useState("");
   const [jsonError, setJsonError] = useState("");
+  const [attributeValues, setAttributeValues] = useState<string[]>([]);
+
+  // Load attributes and resources on mount
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        await Promise.all([fetchAttributes(), fetchResources()]);
+      } catch (error) {
+        console.error("Failed to load attributes/resources:", error);
+      }
+    };
+    loadData();
+  }, [fetchAttributes, fetchResources]);
 
   const defaultValues: PolicyFormData = initialData
     ? {
@@ -30,7 +45,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
       }
     : {
         name: "",
-        policy_rule: { role: "", resource: "", action: [] },
+        policy_rule: { attribute_name: "", attribute_value: "", resource: "", action: [] },
         is_active: true,
       };
 
@@ -48,13 +63,28 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
   });
 
   const watchedPolicy = watch();
+  const watchedAttributeName = watch("policy_rule.attribute_name");
+
+  // Update attribute values dropdown when attribute changes
+  useEffect(() => {
+    if (watchedAttributeName) {
+      const attr = attributes.find((a) => a.name === watchedAttributeName);
+      if (attr?.type === "enum" && attr.enum_values) {
+        setAttributeValues(attr.enum_values);
+      } else {
+        setAttributeValues([]);
+      }
+    } else {
+      setAttributeValues([]);
+    }
+  }, [watchedAttributeName, attributes]);
 
   // Initialize JSON input when initialData changes
   useEffect(() => {
     if (initialData) {
       setJsonInput(JSON.stringify(initialData.policy_rule, null, 2));
     } else {
-      setJsonInput(JSON.stringify({ role: "", resource: "", action: [] }, null, 2));
+      setJsonInput(JSON.stringify({ attribute_name: "", attribute_value: "", resource: "", action: [] }, null, 2));
     }
   }, [initialData]);
 
@@ -194,19 +224,61 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
               </p>
             </div>
 
-            {/* Role */}
+            {/* Attribute Name */}
             <div>
-              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
-                Role *
+              <label htmlFor="attribute_name" className="block text-sm font-medium text-gray-700 mb-1">
+                Attribute *
               </label>
-              <input
-                {...register("policy_rule.role")}
-                id="role"
-                placeholder="e.g., admin, developer, hr"
+              <select
+                {...register("policy_rule.attribute_name")}
+                id="attribute_name"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
-              {errors.policy_rule?.role && (
-                <p className="mt-1 text-sm text-red-600">{errors.policy_rule.role.message}</p>
+              >
+                <option value="">Select an attribute</option>
+                {attributes.map((attr) => (
+                  <option key={attr.id_attribute} value={attr.name}>
+                    {attr.name} ({attr.type})
+                  </option>
+                ))}
+              </select>
+              {errors.policy_rule?.attribute_name && (
+                <p className="mt-1 text-sm text-red-600">{errors.policy_rule?.attribute_name?.message || "Attribute is required"}</p>
+              )}
+            </div>
+
+            {/* Attribute Value */}
+            <div>
+              <label htmlFor="attribute_value" className="block text-sm font-medium text-gray-700 mb-1">
+                Attribute Value *
+              </label>
+              {attributeValues.length > 0 ? (
+                <select
+                  {...register("policy_rule.attribute_value")}
+                  id="attribute_value"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select a value</option>
+                  {attributeValues.map((v) => (
+                    <option key={v} value={v}>
+                      {v}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input
+                  {...register("policy_rule.attribute_value")}
+                  id="attribute_value"
+                  placeholder="e.g., admin, HR, 5, true"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              )}
+              {errors.policy_rule?.attribute_value && (
+                <p className="mt-1 text-sm text-red-600">{errors.policy_rule?.attribute_value?.message || "Attribute value is required"}</p>
+              )}
+              {attributeValues.length > 0 && (
+                <p className="mt-1 text-xs text-gray-500">
+                  Allowed values: {attributeValues.join(", ")}
+                </p>
               )}
             </div>
 
@@ -215,17 +287,24 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
               <label htmlFor="resource" className="block text-sm font-medium text-gray-700 mb-1">
                 Resource *
               </label>
-              <input
+              <select
                 {...register("policy_rule.resource")}
                 id="resource"
-                placeholder="e.g., employee_records, api_*, *"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              />
+              >
+                <option value="">Select a resource</option>
+                <option value="*">Wildcard (*) - All Resources</option>
+                {resources.map((res) => (
+                  <option key={res.id_resource} value={res.name}>
+                    {res.name}
+                  </option>
+                ))}
+              </select>
               {errors.policy_rule?.resource && (
                 <p className="mt-1 text-sm text-red-600">{errors.policy_rule.resource.message}</p>
               )}
               <p className="mt-1 text-xs text-gray-500">
-                Use * for wildcard (e.g., api_docs_* for all API docs)
+                Use * for wildcard to match all resources
               </p>
             </div>
 
@@ -299,7 +378,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                     ? "border-red-500 focus:ring-red-500"
                     : "border-gray-300 focus:ring-blue-500"
                 }`}
-                placeholder='{"role": "admin", "resource": "*", "action": ["*"]}'
+                placeholder='{"attribute_name": "role", "attribute_value": "admin", "resource": "*", "action": ["*"]}'
               />
               {jsonError && <p className="mt-1 text-sm text-red-600">{jsonError}</p>}
               {!jsonError && watchedPolicy.policy_rule && (
