@@ -114,7 +114,11 @@ export interface Policy {
 }
 
 export interface PolicyRule {
-  role: string;
+  // Deprecated: Use attribute_name and attribute_value instead
+  role?: string;
+  // New fields for attribute-based authorization
+  attribute_name?: string;
+  attribute_value?: string;
   resource: string;
   action: string[];
 }
@@ -156,3 +160,29 @@ export type UserPolicyListResponse = ApiResponse<UserPolicyDetail[]>;
 export type UserPolicyResponse = ApiResponse<UserPolicy>;
 export type PolicyListResponse = ApiResponse<Policy[]>;
 export type UserListResponse = ApiResponse<User[]>;
+
+export interface UserAttributeDetail {
+  id_user_attribute: number;
+  id_user: number;
+  user_name: string;
+  user_email: string;
+  id_attribute: number;
+  attribute_name: string;
+  attribute_type: "string" | "number" | "boolean" | "enum";
+  enum_values?: string[];
+  value: string;
+  created_at: string;
+}
+
+export interface CreateUserAttributeRequest {
+  id_user: number;
+  id_attribute: number;
+  value: string;
+}
+
+export interface UpdateUserAttributeRequest {
+  value: string;
+}
+
+export type UserAttributeListResponse = ApiResponse<UserAttributeDetail[]>;
+export type UserAttributeResponse = ApiResponse<UserAttributeDetail>;

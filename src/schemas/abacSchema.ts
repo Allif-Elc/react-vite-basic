@@ -60,16 +60,33 @@ export const userPolicySchema = z.object({
 
 export type UserPolicyFormData = z.infer<typeof userPolicySchema>;
 
-export const policyRuleSchema = z.object({
-  role: z.string().min(1, "Role is required"),
-  resource: z
-    .string()
-    .min(1, "Resource is required")
-    .refine((val) => /^[a-zA-Z0-9_*]+$/.test(val), {
-      message: "Resource can only contain letters, numbers, underscores, and wildcards (*)",
-    }),
-  action: z.array(z.string()).min(1, "At least one action is required"),
-});
+export const policyRuleSchema = z
+  .object({
+    // Deprecated: Use attribute_name and attribute_value
+    role: z.string().optional(),
+    // New fields for attribute-based authorization
+    attribute_name: z.string().optional(),
+    attribute_value: z.string().optional(),
+    resource: z
+      .string()
+      .min(1, "Resource is required")
+      .refine((val) => /^[a-zA-Z0-9_*]+$/.test(val), {
+        message: "Resource can only contain letters, numbers, underscores, and wildcards (*)",
+      }),
+    action: z.array(z.string()).min(1, "At least one action is required"),
+  })
+  .refine(
+    (data) => {
+      // Either old format (role) or new format (attribute_name + attribute_value) must be provided
+      return (
+        (data.role && data.role.length > 0) ||
+        (data.attribute_name && data.attribute_name.length > 0 && data.attribute_value && data.attribute_value.length > 0)
+      );
+    },
+    {
+      message: "Either role or (attribute_name and attribute_value) must be provided",
+    }
+  );
 
 export const policySchema = z.object({
   name: z
@@ -85,3 +102,11 @@ export const policySchema = z.object({
 
 export type PolicyFormData = z.infer<typeof policySchema>;
 export type PolicyRuleFormData = z.infer<typeof policyRuleSchema>;
+
+export const userAttributeSchema = z.object({
+  id_user: z.number().int().positive("User is required"),
+  id_attribute: z.number().int().positive("Attribute is required"),
+  value: z.string().min(1, "Value is required"),
+});
+
+export type UserAttributeFormData = z.infer<typeof userAttributeSchema>;
