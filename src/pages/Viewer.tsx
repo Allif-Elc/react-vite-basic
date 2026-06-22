@@ -8,38 +8,140 @@ import { GRPCViewer } from "../components/viewer/GRPCViewer";
 
 type APIType = "rest" | "graphql" | "grpc";
 
+type PaginationState = {
+  page: number;
+  hasMore: boolean;
+  total: number;
+};
+
 export default function Viewer() {
   const { slug } = useParams<{ slug: string }>();
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [data, setData] = useState<{
     project: any;
-    rest: any[];
-    graphql: any[];
-    grpc: any[];
+    rest: { data: any[]; page: number; limit: number; total: number };
+    graphql: { data: any[]; page: number; limit: number; total: number };
+    grpc: { data: any[]; page: number; limit: number; total: number };
   } | null>(null);
   const [selectedType, setSelectedType] = useState<APIType>("rest");
   const [selectedAPI, setSelectedAPI] = useState<any>(null);
+  const [pagination, setPagination] = useState<{
+    rest: PaginationState;
+    graphql: PaginationState;
+    grpc: PaginationState;
+  }>({
+    rest: { page: 1, hasMore: false, total: 0 },
+    graphql: { page: 1, hasMore: false, total: 0 },
+    grpc: { page: 1, hasMore: false, total: 0 },
+  });
+  const [loadingMore, setLoadingMore] = useState(false);
+
+  // Helper function to normalize API IDs
+  const getAPIId = useCallback((api: any): string => {
+    return String(api.id_rest_api || api.id_graphql_api || api.id_grpc_api || "");
+  }, []);
+
+  // Helper function to auto-select first available API
+  const autoSelectAPI = useCallback((responseData: any) => {
+    if (responseData.rest?.data?.[0]) {
+      setSelectedAPI(responseData.rest.data[0]);
+      setSelectedType("rest");
+    } else if (responseData.graphql?.data?.[0]) {
+      setSelectedAPI(responseData.graphql.data[0]);
+      setSelectedType("graphql");
+    } else if (responseData.grpc?.data?.[0]) {
+      setSelectedAPI(responseData.grpc.data[0]);
+      setSelectedType("grpc");
+    }
+  }, []);
 
   useEffect(() => {
     if (slug) {
       setLoading(true);
       setError(null);
       fetchPublicAPIs(slug)
-        .then(setData)
+        .then((responseData) => {
+          setData(responseData);
+          setPagination({
+            rest: {
+              page: 1,
+              hasMore: responseData.rest.data.length < responseData.rest.total,
+              total: responseData.rest.total,
+            },
+            graphql: {
+              page: 1,
+              hasMore: responseData.graphql.data.length < responseData.graphql.total,
+              total: responseData.graphql.total,
+            },
+            grpc: {
+              page: 1,
+              hasMore: responseData.grpc.data.length < responseData.grpc.total,
+              total: responseData.grpc.total,
+            },
+          });
+          autoSelectAPI(responseData);
+        })
         .catch(() => setError("Failed to load documentation"))
         .finally(() => setLoading(false));
     }
-  }, [slug]);
+  }, [slug, autoSelectAPI]);
 
   const apiList = useMemo(() => {
     if (!data) return [];
-    return data[selectedType] || [];
+    return data[selectedType]?.data || [];
   }, [data, selectedType]);
 
   const handleAPISelect = useCallback((api: any) => {
     setSelectedAPI(api);
   }, []);
+
+  const loadMoreAPIs = useCallback(async () => {
+    if (!data || !slug || loadingMore) return;
+    const currentPagination = pagination[selectedType];
+    if (!currentPagination.hasMore) return;
+
+    setLoadingMore(true);
+    try {
+      const nextPage = currentPagination.page + 1;
+      const response = await fetchPublicAPIs(slug, nextPage, 20);
+      setData(prev => ({
+        ...prev!,
+        [selectedType]: {
+          ...response[selectedType],
+          data: [...prev![selectedType].data, ...response[selectedType].data],
+        },
+      }));
+      setPagination(prev => ({
+        ...prev!,
+        [selectedType]: {
+          page: nextPage,
+          hasMore: response[selectedType].data.length < response[selectedType].total,
+          total: response[selectedType].total,
+        },
+      }));
+    } catch (error) {
+      console.error("Failed to load more APIs:", error);
+    } finally {
+      setLoadingMore(false);
+    }
+  }, [data, slug, selectedType, loadingMore, pagination]);
+
+  const handleTabClick = useCallback((type: APIType) => {
+    setSelectedType(type);
+    if (data && data[type]?.data?.[0]) {
+      const firstAPI = data[type].data[0];
+      const currentAPIId = getAPIId(selectedAPI);
+      const firstAPIId = getAPIId(firstAPI);
+
+      // Only auto-select if switching to a different type or if current selection doesn't belong to new type
+      if (type !== selectedType || currentAPIId !== firstAPIId) {
+        setSelectedAPI(firstAPI);
+      }
+    } else if (data && data[type]?.data?.length === 0) {
+      setSelectedAPI(null);
+    }
+  }, [data, selectedType, getAPIId]);
 
   if (loading) {
     return (
@@ -83,10 +185,7 @@ export default function Viewer() {
           {(["rest", "graphql", "grpc"] as APIType[]).map((type) => (
             <button
               key={type}
-              onClick={() => {
-                setSelectedType(type);
-                setSelectedAPI(null);
-              }}
+              onClick={() => handleTabClick(type)}
               className={`flex-1 py-3 text-sm font-medium capitalize transition-colors ${
                 selectedType === type
                   ? "bg-blue-50 text-blue-600 border-b-2 border-blue-600"
@@ -104,17 +203,18 @@ export default function Viewer() {
           ) : (
             <div className="space-y-1">
               {apiList.map((api) => {
-                const id = api.id_rest_api || api.id_graphql_api || api.id_grpc_api;
+                const id = getAPIId(api);
                 const name = api.name || `${api.service_name}.${api.method_name}`;
                 const sub = api.endpoint || api.return_type || api.method_name;
                 const method = api.method || api.type || "GET";
+                const isSelected = getAPIId(selectedAPI) === id;
 
                 return (
                   <button
                     key={id}
                     onClick={() => handleAPISelect(api)}
                     className={`w-full text-left p-3 rounded-lg transition-colors ${
-                      selectedAPI?.id === id
+                      isSelected
                         ? "bg-blue-50 border border-blue-200"
                         : "hover:bg-gray-50 border border-transparent"
                     }`}
@@ -130,6 +230,17 @@ export default function Viewer() {
                 );
               })}
             </div>
+          )}
+
+          {/* Load More Button */}
+          {apiList.length > 0 && pagination[selectedType].hasMore && (
+            <button
+              onClick={loadMoreAPIs}
+              disabled={loadingMore}
+              className="w-full mt-2 py-2 px-4 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+            >
+              {loadingMore ? "Loading..." : "Load More"}
+            </button>
           )}
         </div>
       </aside>
@@ -159,7 +270,7 @@ export default function Viewer() {
                 />
               </svg>
               <p className="text-lg font-medium">Select an API to view documentation</p>
-              <p className="text-sm mt-1">Choose an API from the sidebar</p>
+              <p className="text-sm mt-1">Choose an API from sidebar</p>
             </div>
           </div>
         )}

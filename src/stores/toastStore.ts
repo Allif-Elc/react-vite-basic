@@ -4,12 +4,12 @@ import { devtools } from "zustand/middleware";
 export interface Toast {
   id: string;
   message: string;
-  type: "success" | "error";
+  type: "success" | "error" | "warning";
 }
 
 interface ToastStore {
   toasts: Toast[];
-  addToast: (message: string, type: "success" | "error") => void;
+  addToast: (message: string, type: "success" | "error" | "warning") => void;
   removeToast: (id: string) => void;
   clearToasts: () => void;
 }
