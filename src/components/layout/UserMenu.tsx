@@ -82,7 +82,7 @@ const UserMenu = ({ onLogout }: UserMenuProps) => {
     return (
       <a
         href="/login"
-        className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors"
+        className="inline-flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors"
       >
         <LogIn className="w-5 h-5" aria-hidden="true" />
         <span>Login</span>
@@ -109,9 +109,9 @@ const UserMenu = ({ onLogout }: UserMenuProps) => {
         onKeyDown={handleKeyDown}
         aria-haspopup="true"
         aria-expanded={isOpen}
-        className="inline-flex items-center gap-2 px-4 py-2 text-gray-700 hover:text-gray-900 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded"
+        className="inline-flex items-center gap-2 px-4 py-2 text-muted-foreground hover:text-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring rounded"
       >
-        <div className="w-8 h-8 rounded-full bg-blue-500 flex items-center justify-center text-white font-medium text-sm">
+        <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-foreground font-medium text-sm">
           {getUserInitials()}
         </div>
         {user?.name && <span className="hidden sm:inline">{user.name}</span>}
@@ -132,7 +132,7 @@ const UserMenu = ({ onLogout }: UserMenuProps) => {
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="user-menu-button"
-          className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+          className="absolute right-0 mt-2 w-48 bg-card rounded-lg shadow-lg border border-border py-1 z-50"
         >
           {menuItems.map((item) => {
             const Icon = item.icon;
@@ -143,7 +143,7 @@ const UserMenu = ({ onLogout }: UserMenuProps) => {
                   type="button"
                   onClick={item.onClick}
                   role="menuitem"
-                  className="w-full text-left px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-3"
+                  className="w-full text-left px-4 py-2 text-foreground hover:bg-muted transition-colors flex items-center gap-3"
                 >
                   <Icon className="w-4 h-4" aria-hidden="true" />
                   <span>{item.label}</span>
@@ -155,7 +155,7 @@ const UserMenu = ({ onLogout }: UserMenuProps) => {
                 key={item.label}
                 href={item.href}
                 role="menuitem"
-                className="block px-4 py-2 text-gray-700 hover:bg-gray-100 transition-colors flex items-center gap-3"
+                className="block px-4 py-2 text-foreground hover:bg-muted transition-colors flex items-center gap-3"
               >
                 <Icon className="w-4 h-4" aria-hidden="true" />
                 <span>{item.label}</span>

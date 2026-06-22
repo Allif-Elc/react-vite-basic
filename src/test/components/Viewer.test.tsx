@@ -195,7 +195,7 @@ describe("Viewer", () => {
 		await waitFor(() => {
 			// Verify the selected API is highlighted
 			const selectedButton = screen.getByText("POST /api/users").closest("button");
-			expect(selectedButton).toHaveClass(/bg-blue-50/);
+			expect(selectedButton).toHaveClass(/bg-primary\\/10/);
 		});
 	});
 });

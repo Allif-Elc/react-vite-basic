@@ -118,8 +118,8 @@ export default function UserPoliciesPage() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading user policies...</p>
+          <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading user policies...</p>
         </div>
       </div>
     );
@@ -129,8 +129,8 @@ export default function UserPoliciesPage() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Policies</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">User Policies</h1>
+          <p className="text-muted-foreground mt-1">
             Manage user-to-policy assignments with priority overrides
           </p>
         </div>
@@ -138,7 +138,7 @@ export default function UserPoliciesPage() {
           <button
             onClick={handleCreate}
             disabled={isSubmitting}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Plus className="w-5 h-5" />
             Create User Policy
@@ -163,14 +163,14 @@ export default function UserPoliciesPage() {
       )}
 
       <div className="mb-6 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           placeholder="Search by user name, email, or policy..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           disabled={isSubmitting}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:cursor-not-allowed"
         />
       </div>
 
@@ -186,12 +186,12 @@ export default function UserPoliciesPage() {
       )}
 
       {filteredPolicies.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-          <UserCog className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
+          <UserCog className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">
             {searchTerm ? "No Matching User Policies" : "No User Policies Found"}
           </h2>
-          <p className="text-gray-500 mb-6">
+          <p className="text-muted-foreground mb-6">
             {searchTerm
               ? "Try adjusting your search terms"
               : "Create your first user policy to assign specific policies to users"}
@@ -200,7 +200,7 @@ export default function UserPoliciesPage() {
             <button
               onClick={handleCreate}
               disabled={isSubmitting}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Create User Policy
             </button>

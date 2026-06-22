@@ -46,31 +46,31 @@ export const ParameterList = memo<ParameterListProps>(
     return (
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <label className="block text-sm font-medium text-gray-700">{label}</label>
+          <label className="block text-sm font-medium text-muted-foreground">{label}</label>
           <button
             type="button"
             onClick={handleAdd}
-            className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
+            className="text-primary hover:text-primary text-sm flex items-center gap-1"
           >
             <Plus size={16} /> Add
           </button>
         </div>
         <div className="space-y-2">
           {fields.length === 0 ? (
-            <div className="text-sm text-gray-500 italic p-2 bg-gray-50 rounded">
+            <div className="text-sm text-muted-foreground italic p-2 bg-muted rounded">
               No {label.toLowerCase()} added yet
             </div>
           ) : (
             fields.map((field, index) => (
               <div
                 key={field.id}
-                className="space-y-2 p-3 border border-gray-200 rounded-lg bg-white"
+                className="space-y-2 p-3 border border-border rounded-lg bg-card"
               >
                 <div className="flex gap-2 items-center">
                   <button
                     type="button"
                     onClick={() => remove(index)}
-                    className="text-gray-400 hover:text-red-500 transition-colors"
+                    className="text-muted-foreground hover:text-red-500 transition-colors"
                     aria-label="Remove parameter"
                   >
                     <X size={16} />
@@ -79,11 +79,11 @@ export const ParameterList = memo<ParameterListProps>(
                     {...register(`${name}.${index}.name`)}
                     type="text"
                     placeholder={placeholder}
-                    className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                   <select
                     {...register(`${name}.${index}.type`)}
-                    className="w-24 px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-24 px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     {typeOptions.map((type) => (
                       <option key={type} value={type}>
@@ -92,11 +92,11 @@ export const ParameterList = memo<ParameterListProps>(
                     ))}
                   </select>
                   {showRequired && (
-                    <label className="flex items-center gap-2 text-sm text-gray-700 whitespace-nowrap">
+                    <label className="flex items-center gap-2 text-sm text-muted-foreground whitespace-nowrap">
                       <input
                         {...register(`${name}.${index}.required`)}
                         type="checkbox"
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                        className="rounded border-border text-primary focus:ring-ring"
                       />
                       Required
                     </label>
@@ -108,7 +108,7 @@ export const ParameterList = memo<ParameterListProps>(
                       {...register(`${name}.${index}.example`)}
                       type="text"
                       placeholder="Example value"
-                      className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                   )}
                   {showDefault && (
@@ -116,14 +116,14 @@ export const ParameterList = memo<ParameterListProps>(
                       {...register(`${name}.${index}.default`)}
                       type="text"
                       placeholder="Default value"
-                      className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                   )}
                   <input
                     {...register(`${name}.${index}.description`)}
                     type="text"
                     placeholder="Description"
-                    className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="flex-1 min-w-0 px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
               </div>

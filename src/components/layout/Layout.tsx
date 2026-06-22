@@ -11,21 +11,21 @@ export default function Layout() {
   }, [logout]);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-background">
+      <header className="bg-card shadow-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-          <h1 className="text-xl font-bold text-gray-900">API Docs Platform</h1>
+          <h1 className="text-xl font-bold text-foreground">API Docs Platform</h1>
           <nav className="flex gap-4 items-center">
-            <a href="/" className="text-gray-700 hover:text-gray-900">
+            <a href="/" className="text-muted-foreground hover:text-foreground">
               Dashboard
             </a>
-            <a href="/abac" className="text-gray-700 hover:text-gray-900">
+            <a href="/abac" className="text-muted-foreground hover:text-foreground">
               Access Control
             </a>
-            <a href="/projects/new" className="text-gray-700 hover:text-gray-900">
+            <a href="/projects/new" className="text-muted-foreground hover:text-foreground">
               New Project
             </a>
-            <div className="border-l border-gray-300 h-6 mx-2" />
+            <div className="border-l border-border h-6 mx-2" />
             <UserMenu onLogout={handleLogout} />
           </nav>
         </div>

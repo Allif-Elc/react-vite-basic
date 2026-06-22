@@ -127,34 +127,34 @@ export function CreateUserPolicyForm({
   const getPriorityColor = (priority: number) => {
     if (priority > 0) return "text-green-600";
     if (priority < 0) return "text-red-600";
-    return "text-gray-600";
+    return "text-muted-foreground";
   };
 
   if (isLoadingData) {
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8">
+      <div className="bg-card rounded-lg shadow-sm border border-border p-8">
         <div className="flex items-center justify-center">
-          <Loader2 className="w-6 h-6 text-blue-600 animate-spin" />
-          <span className="ml-2 text-gray-600">Loading form data...</span>
+          <Loader2 className="w-6 h-6 text-primary animate-spin" />
+          <span className="ml-2 text-muted-foreground">Loading form data...</span>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+    <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="p-6 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <UserCog className="w-5 h-5 text-blue-600" />
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <UserCog className="w-5 h-5 text-primary" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-foreground">
             {initialData ? "Edit User Policy" : "New User Policy"}
           </h2>
         </div>
         <button
           onClick={onCancel}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
@@ -162,14 +162,14 @@ export function CreateUserPolicyForm({
 
       <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
         <div>
-          <label htmlFor="id_user" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="id_user" className="block text-sm font-medium text-muted-foreground mb-1">
             User *
           </label>
           <select
             {...register("id_user", { valueAsNumber: true })}
             id="id_user"
             disabled={isLoading}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:cursor-not-allowed"
           >
             <option value={0}>Select a user</option>
             {users.map((user) => (
@@ -182,14 +182,14 @@ export function CreateUserPolicyForm({
         </div>
 
         <div>
-          <label htmlFor="id_policy" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="id_policy" className="block text-sm font-medium text-muted-foreground mb-1">
             Policy *
           </label>
           <select
             {...register("id_policy", { valueAsNumber: true })}
             id="id_policy"
             disabled={isLoading}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:cursor-not-allowed"
           >
             <option value={0}>Select a policy</option>
             {policies
@@ -207,7 +207,7 @@ export function CreateUserPolicyForm({
 
         <div>
           <div className="flex items-center justify-between mb-2">
-            <label htmlFor="priority" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="priority" className="block text-sm font-medium text-muted-foreground">
               Priority
             </label>
             <span className={`text-sm font-medium ${getPriorityColor(watchedPriority)}`}>
@@ -216,7 +216,7 @@ export function CreateUserPolicyForm({
             </span>
           </div>
           <div className="flex items-center gap-3">
-            <span className="text-xs text-gray-500">-100</span>
+            <span className="text-xs text-muted-foreground">-100</span>
             <input
               {...register("priority", { valueAsNumber: true })}
               id="priority"
@@ -225,11 +225,11 @@ export function CreateUserPolicyForm({
               max="100"
               step="5"
               disabled={isLoading}
-              className="flex-1 h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-blue-600 disabled:cursor-not-allowed"
+              className="flex-1 h-2 bg-muted rounded-lg appearance-none cursor-pointer accent-primary disabled:cursor-not-allowed"
             />
-            <span className="text-xs text-gray-500">+100</span>
+            <span className="text-xs text-muted-foreground">+100</span>
           </div>
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Higher priority policies are evaluated first. Role-based policies have priority 0.
           </p>
           {errors.priority && (
@@ -238,7 +238,7 @@ export function CreateUserPolicyForm({
         </div>
 
         <div>
-          <label htmlFor="expires_at" className="block text-sm font-medium text-gray-700 mb-1">
+          <label htmlFor="expires_at" className="block text-sm font-medium text-muted-foreground mb-1">
             Expiration Date
           </label>
           <input
@@ -246,9 +246,9 @@ export function CreateUserPolicyForm({
             id="expires_at"
             type="datetime-local"
             disabled={isLoading}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+            className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:cursor-not-allowed"
           />
-          <p className="mt-1 text-xs text-gray-500">
+          <p className="mt-1 text-xs text-muted-foreground">
             Leave empty for permanent access. Used for temporary access grants.
           </p>
           {errors.expires_at && (
@@ -260,7 +260,7 @@ export function CreateUserPolicyForm({
           <button
             type="submit"
             disabled={isSubmitting || isLoading}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
           >
             {(isSubmitting || isLoading) && <Loader2 className="w-4 h-4 animate-spin" />}
             {isSubmitting || isLoading ? "Saving..." : initialData ? "Update" : "Create"}
@@ -269,7 +269,7 @@ export function CreateUserPolicyForm({
             type="button"
             onClick={onCancel}
             disabled={isSubmitting || isLoading}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 border border-border rounded-lg hover:bg-muted disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             Cancel
           </button>

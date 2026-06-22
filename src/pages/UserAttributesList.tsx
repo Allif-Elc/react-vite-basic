@@ -19,17 +19,17 @@ const UserAttributeCard = memo<UserAttributeCardProps>(({ userAttribute, onEdit,
       case "enum":
         return "bg-purple-100 text-purple-800";
       case "number":
-        return "bg-blue-100 text-blue-800";
+        return "bg-primary/10 text-primary";
       case "boolean":
         return "bg-green-100 text-green-800";
       case "string":
       default:
-        return "bg-gray-100 text-gray-800";
+        return "bg-muted text-foreground";
     }
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4 text-indigo-600" />
@@ -40,7 +40,7 @@ const UserAttributeCard = memo<UserAttributeCardProps>(({ userAttribute, onEdit,
         <div className="flex items-center gap-1">
           <button
             onClick={() => onEdit(userAttribute)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+            className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded transition-colors"
             title="Edit"
           >
             <Edit2 className="w-4 h-4" />
@@ -48,7 +48,7 @@ const UserAttributeCard = memo<UserAttributeCardProps>(({ userAttribute, onEdit,
           <button
             onClick={() => onDelete(userAttribute.id_user_attribute)}
             disabled={isDeleting}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             title="Delete"
           >
             <Trash2 className="w-4 h-4" />
@@ -58,19 +58,19 @@ const UserAttributeCard = memo<UserAttributeCardProps>(({ userAttribute, onEdit,
 
       <div className="space-y-2">
         <div>
-          <p className="text-sm font-medium text-gray-900">{userAttribute.user_name}</p>
-          <p className="text-xs text-gray-500">{userAttribute.user_email}</p>
+          <p className="text-sm font-medium text-foreground">{userAttribute.user_name}</p>
+          <p className="text-xs text-muted-foreground">{userAttribute.user_email}</p>
         </div>
 
-        <div className="pt-2 border-t border-gray-100">
-          <p className="text-xs text-gray-500 mb-1">Value</p>
-          <p className="text-sm font-medium text-gray-900 bg-gray-50 px-2 py-1 rounded inline-block">
+        <div className="pt-2 border-t border-border">
+          <p className="text-xs text-muted-foreground mb-1">Value</p>
+          <p className="text-sm font-medium text-foreground bg-muted px-2 py-1 rounded inline-block">
             {userAttribute.value}
           </p>
         </div>
       </div>
 
-      <div className="mt-3 pt-3 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+      <div className="mt-3 pt-3 border-t border-border flex items-center justify-between text-xs text-muted-foreground">
         <span>Type: {userAttribute.attribute_type}</span>
         <span>{new Date(userAttribute.created_at).toLocaleDateString()}</span>
       </div>
@@ -175,8 +175,8 @@ export default function UserAttributesList() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <Loader2 className="w-12 h-12 text-blue-600 animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading user attributes...</p>
+          <Loader2 className="w-12 h-12 text-primary animate-spin mx-auto mb-4" />
+          <p className="text-muted-foreground">Loading user attributes...</p>
         </div>
       </div>
     );
@@ -186,8 +186,8 @@ export default function UserAttributesList() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">User Attributes</h1>
-          <p className="text-gray-500 mt-1">
+          <h1 className="text-2xl font-bold text-foreground">User Attributes</h1>
+          <p className="text-muted-foreground mt-1">
             Assign attributes to users for fine-grained access control
           </p>
         </div>
@@ -195,7 +195,7 @@ export default function UserAttributesList() {
           <button
             onClick={handleCreate}
             disabled={isDeleting}
-            className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <Plus className="w-5 h-5" />
             Assign Attribute
@@ -220,14 +220,14 @@ export default function UserAttributesList() {
       )}
 
       <div className="mb-6 relative">
-        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
         <input
           type="text"
           placeholder="Search by user name, attribute, or value..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           disabled={isDeleting}
-          className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
+          className="w-full pl-10 pr-4 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:cursor-not-allowed"
         />
       </div>
 
@@ -245,12 +245,12 @@ export default function UserAttributesList() {
       )}
 
       {filteredAttributes.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-          <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
+          <Shield className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">
             {searchTerm ? "No Matching User Attributes" : "No User Attributes Found"}
           </h2>
-          <p className="text-gray-500 mb-6">
+          <p className="text-muted-foreground mb-6">
             {searchTerm
               ? "Try adjusting your search terms"
               : "Assign your first attribute to a user to enable attribute-based access control"}
@@ -259,7 +259,7 @@ export default function UserAttributesList() {
             <button
               onClick={handleCreate}
               disabled={isDeleting}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               Assign Attribute
             </button>

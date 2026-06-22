@@ -14,7 +14,7 @@ export const UserPolicyItem = memo<UserPolicyItemProps>(({ userPolicy, onEdit, o
     if (priority > 0) return "text-green-600 bg-green-50";
     if (priority < -50) return "text-red-700 bg-red-100";
     if (priority < 0) return "text-red-600 bg-red-50";
-    return "text-gray-600 bg-gray-100";
+    return "text-muted-foreground bg-muted";
   };
 
   const formatExpiration = (dateStr: string) => {
@@ -33,29 +33,29 @@ export const UserPolicyItem = memo<UserPolicyItemProps>(({ userPolicy, onEdit, o
 
   return (
     <div
-      className={`bg-white rounded-lg shadow-sm border ${userPolicy.is_active ? "border-gray-200" : "border-gray-300 opacity-75"} p-5 hover:shadow-md transition-shadow`}
+      className={`bg-card rounded-lg shadow-sm border ${userPolicy.is_active ? "border-border" : "border-border opacity-75"} p-5 hover:shadow-md transition-shadow`}
     >
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-blue-100 rounded-lg">
-            <UserCog className="w-5 h-5 text-blue-600" />
+          <div className="p-2 bg-primary/10 rounded-lg">
+            <UserCog className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{userPolicy.user_name}</h3>
-            <p className="text-sm text-gray-500">{userPolicy.user_email}</p>
+            <h3 className="font-semibold text-foreground">{userPolicy.user_name}</h3>
+            <p className="text-sm text-muted-foreground">{userPolicy.user_email}</p>
           </div>
         </div>
         <div className="flex gap-2">
           <button
             onClick={() => onEdit(userPolicy)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
             aria-label="Edit user policy"
           >
             <Edit2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDelete(userPolicy.id_user_policy)}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             aria-label="Delete user policy"
           >
             <Trash2 className="w-4 h-4" />
@@ -65,12 +65,12 @@ export const UserPolicyItem = memo<UserPolicyItemProps>(({ userPolicy, onEdit, o
 
       <div className="space-y-2">
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Policy:</span>
-          <span className="text-sm font-medium text-gray-900">{userPolicy.policy_name}</span>
+          <span className="text-sm text-muted-foreground">Policy:</span>
+          <span className="text-sm font-medium text-foreground">{userPolicy.policy_name}</span>
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Priority:</span>
+          <span className="text-sm text-muted-foreground">Priority:</span>
           <span
             className={`text-xs px-2 py-1 rounded-full font-medium ${getPriorityColor(userPolicy.priority)}`}
           >
@@ -80,10 +80,10 @@ export const UserPolicyItem = memo<UserPolicyItemProps>(({ userPolicy, onEdit, o
         </div>
 
         <div className="flex items-center justify-between">
-          <span className="text-sm text-gray-600">Status:</span>
+          <span className="text-sm text-muted-foreground">Status:</span>
           <span
             className={`text-xs px-2 py-1 rounded-full font-medium ${
-              userPolicy.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+              userPolicy.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"
             }`}
           >
             {userPolicy.is_active ? "Active" : "Inactive"}

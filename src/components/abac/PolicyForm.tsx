@@ -158,33 +158,33 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+    <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="p-6 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-3">
           <div className="p-2 bg-indigo-100 rounded-lg">
             <FileText className="w-5 h-5 text-indigo-600" />
           </div>
-          <h2 className="text-xl font-semibold text-gray-900">
+          <h2 className="text-xl font-semibold text-foreground">
             {initialData ? "Edit Policy" : "New Policy"}
           </h2>
         </div>
         <button
           onClick={onClose}
-          className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+          className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
         >
           <X className="w-5 h-5" />
         </button>
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-border">
         <button
           type="button"
           onClick={() => setActiveTab("form")}
           className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
             activeTab === "form"
-              ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-              : "text-gray-500 hover:text-gray-700"
+              ? "text-primary border-b-2 border-primary bg-primary/10"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Type className="w-4 h-4" />
@@ -195,8 +195,8 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
           onClick={() => setActiveTab("json")}
           className={`flex items-center gap-2 px-6 py-3 font-medium transition-colors ${
             activeTab === "json"
-              ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-              : "text-gray-500 hover:text-gray-700"
+              ? "text-primary border-b-2 border-primary bg-primary/10"
+              : "text-muted-foreground hover:text-foreground"
           }`}
         >
           <Code className="w-4 h-4" />
@@ -209,30 +209,30 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
           <>
             {/* Name */}
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-1">
                 Policy Name *
               </label>
               <input
                 {...register("name")}
                 id="name"
                 placeholder="e.g., hr_employee_records"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               />
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Use lowercase with underscores (e.g., api_admin_full_access)
               </p>
             </div>
 
             {/* Attribute Name */}
             <div>
-              <label htmlFor="attribute_name" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="attribute_name" className="block text-sm font-medium text-muted-foreground mb-1">
                 Attribute *
               </label>
               <select
                 {...register("policy_rule.attribute_name")}
                 id="attribute_name"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="">Select an attribute</option>
                 {attributes.map((attr) => (
@@ -248,14 +248,14 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
 
             {/* Attribute Value */}
             <div>
-              <label htmlFor="attribute_value" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="attribute_value" className="block text-sm font-medium text-muted-foreground mb-1">
                 Attribute Value *
               </label>
               {attributeValues.length > 0 ? (
                 <select
                   {...register("policy_rule.attribute_value")}
                   id="attribute_value"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 >
                   <option value="">Select a value</option>
                   {attributeValues.map((v) => (
@@ -269,14 +269,14 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                   {...register("policy_rule.attribute_value")}
                   id="attribute_value"
                   placeholder="e.g., admin, HR, 5, true"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 />
               )}
               {errors.policy_rule?.attribute_value && (
                 <p className="mt-1 text-sm text-red-600">{errors.policy_rule?.attribute_value?.message || "Attribute value is required"}</p>
               )}
               {attributeValues.length > 0 && (
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Allowed values: {attributeValues.join(", ")}
                 </p>
               )}
@@ -284,13 +284,13 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
 
             {/* Resource */}
             <div>
-              <label htmlFor="resource" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="resource" className="block text-sm font-medium text-muted-foreground mb-1">
                 Resource *
               </label>
               <select
                 {...register("policy_rule.resource")}
                 id="resource"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="">Select a resource</option>
                 <option value="*">Wildcard (*) - All Resources</option>
@@ -303,14 +303,14 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
               {errors.policy_rule?.resource && (
                 <p className="mt-1 text-sm text-red-600">{errors.policy_rule.resource.message}</p>
               )}
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Use * for wildcard to match all resources
               </p>
             </div>
 
             {/* Actions */}
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">Actions *</label>
+              <label className="block text-sm font-medium text-muted-foreground mb-1">Actions *</label>
               <div className="space-y-2">
                 {(watchedPolicy.policy_rule?.action || []).map((action, index) => (
                   <div key={index} className="flex gap-2">
@@ -318,7 +318,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                       value={action}
                       onChange={(e) => updateAction(index, e.target.value)}
                       placeholder="e.g., read, write, delete, *"
-                      className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="flex-1 px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                     />
                     {(watchedPolicy.policy_rule?.action?.length || 0) > 1 && (
                       <button
@@ -334,7 +334,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                 <button
                   type="button"
                   onClick={addAction}
-                  className="flex items-center gap-2 text-sm text-blue-600 hover:text-blue-700 transition-colors"
+                  className="flex items-center gap-2 text-sm text-primary hover:text-primary transition-colors"
                 >
                   <Plus className="w-4 h-4" />
                   Add Action
@@ -343,7 +343,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
               {errors.policy_rule?.action && (
                 <p className="mt-1 text-sm text-red-600">{errors.policy_rule.action.message}</p>
               )}
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Use * for all actions. Common: read, write, delete, execute
               </p>
             </div>
@@ -354,9 +354,9 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                 {...register("is_active")}
                 id="is_active"
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-ring"
               />
-              <label htmlFor="is_active" className="text-sm font-medium text-gray-700">
+              <label htmlFor="is_active" className="text-sm font-medium text-muted-foreground">
                 Active
               </label>
             </div>
@@ -365,7 +365,7 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
           <>
             {/* JSON Editor */}
             <div>
-              <label htmlFor="json-input" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="json-input" className="block text-sm font-medium text-muted-foreground mb-1">
                 Policy Rule (JSON) *
               </label>
               <textarea
@@ -376,13 +376,13 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                 className={`w-full px-3 py-2 font-mono text-sm border rounded-lg focus:outline-none focus:ring-2 ${
                   jsonError
                     ? "border-red-500 focus:ring-red-500"
-                    : "border-gray-300 focus:ring-blue-500"
+                    : "border-border focus:ring-ring"
                 }`}
                 placeholder='{"attribute_name": "role", "attribute_value": "admin", "resource": "*", "action": ["*"]}'
               />
               {jsonError && <p className="mt-1 text-sm text-red-600">{jsonError}</p>}
               {!jsonError && watchedPolicy.policy_rule && (
-                <p className="mt-1 text-xs text-gray-500">
+                <p className="mt-1 text-xs text-muted-foreground">
                   Valid JSON with {watchedPolicy.policy_rule.action?.length || 0} action(s)
                 </p>
               )}
@@ -390,14 +390,14 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
 
             {/* Name (still needed in JSON mode) */}
             <div>
-              <label htmlFor="name-json" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="name-json" className="block text-sm font-medium text-muted-foreground mb-1">
                 Policy Name *
               </label>
               <input
                 {...register("name")}
                 id="name-json"
                 placeholder="e.g., hr_employee_records"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               />
               {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
             </div>
@@ -408,9 +408,9 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
                 {...register("is_active")}
                 id="is_active-json"
                 type="checkbox"
-                className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-2 focus:ring-blue-500"
+                className="w-4 h-4 text-primary border-border rounded focus:ring-2 focus:ring-ring"
               />
-              <label htmlFor="is_active-json" className="text-sm font-medium text-gray-700">
+              <label htmlFor="is_active-json" className="text-sm font-medium text-muted-foreground">
                 Active
               </label>
             </div>
@@ -422,14 +422,14 @@ export const PolicyForm = memo<PolicyFormProps>(({ initialData, onClose, onSucce
           <button
             type="submit"
             disabled={isSubmitting || !!jsonError}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? "Saving..." : initialData ? "Update" : "Create"}
           </button>
           <button
             type="button"
             onClick={onClose}
-            className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+            className="px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
           >
             Cancel
           </button>

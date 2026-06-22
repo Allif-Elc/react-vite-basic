@@ -59,9 +59,9 @@ const ResponseItem = memo<ResponseItemProps>(
     );
 
     return (
-      <div className="border border-gray-200 rounded-lg bg-white overflow-hidden">
+      <div className="border border-border rounded-lg bg-card overflow-hidden">
         <div
-          className="flex items-center gap-3 p-3 bg-gray-50 cursor-pointer hover:bg-gray-100"
+          className="flex items-center gap-3 p-3 bg-muted cursor-pointer hover:bg-muted"
           onClick={onToggle}
         >
           {expanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
@@ -72,7 +72,7 @@ const ResponseItem = memo<ResponseItemProps>(
                 type="number"
                 min="100"
                 max="599"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="200"
               />
             </div>
@@ -80,7 +80,7 @@ const ResponseItem = memo<ResponseItemProps>(
               <input
                 {...register(`${name}.${index}.description`)}
                 type="text"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="Success response"
               />
             </div>
@@ -99,13 +99,13 @@ const ResponseItem = memo<ResponseItemProps>(
           </div>
         </div>
         {expanded && (
-          <div className="p-3 border-t border-gray-200">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+          <div className="p-3 border-t border-border">
+            <label className="block text-sm font-medium text-muted-foreground mb-2">
               Response Body (JSON)
             </label>
             <textarea
               rows={10}
-              className="w-full px-3 py-2 text-sm font-mono border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-50"
+              className="w-full px-3 py-2 text-sm font-mono border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring bg-muted"
               placeholder='{"message": "Success"}'
               value={localBodyValue}
               onChange={(e) => handleBodyChange(e.target.value)}
@@ -141,18 +141,18 @@ export const ResponseViewer = memo<ResponseViewerProps>(({ form, name }) => {
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
-        <label className="block text-sm font-medium text-gray-700">Response Examples</label>
+        <label className="block text-sm font-medium text-muted-foreground">Response Examples</label>
         <button
           type="button"
           onClick={handleAdd}
-          className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
+          className="text-primary hover:text-primary text-sm flex items-center gap-1"
         >
           <Plus size={16} /> Add Response
         </button>
       </div>
       <div className="space-y-3">
         {fields.length === 0 ? (
-          <div className="text-sm text-gray-500 italic p-2 bg-gray-50 rounded">
+          <div className="text-sm text-muted-foreground italic p-2 bg-muted rounded">
             No response examples added yet
           </div>
         ) : (

@@ -18,23 +18,23 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Header */}
       <div className="flex items-center gap-4 pb-6 border-b">
         <MethodBadge method={api.method} size="md" />
-        <h1 className="text-2xl font-bold text-gray-900">{api.name}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{api.name}</h1>
       </div>
 
       {/* Description */}
       {api.description && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
             Description
           </h2>
-          <p className="text-gray-700">{api.description}</p>
+          <p className="text-muted-foreground">{api.description}</p>
         </div>
       )}
 
       {/* Endpoint */}
       <div>
-        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">Endpoint</h2>
-        <code className="px-3 py-2 bg-gray-100 rounded-lg text-sm font-mono text-gray-800">
+        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">Endpoint</h2>
+        <code className="px-3 py-2 bg-muted rounded-lg text-sm font-mono text-foreground">
           {api.endpoint}
         </code>
       </div>
@@ -42,32 +42,32 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Headers */}
       {headers.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Headers
           </h2>
-          <div className="bg-gray-50 rounded-lg overflow-hidden">
+          <div className="bg-muted rounded-lg overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-100">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Name</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Type</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Description</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Example</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Type</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Description</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Example</th>
                 </tr>
               </thead>
               <tbody>
                 {headers.map((header, i) => (
-                  <tr key={i} className="border-t border-gray-200">
+                  <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2 font-mono">{header.name}</td>
                     <td className="px-4 py-2">
                       {header.required ? (
                         <span className="text-red-600">Required</span>
                       ) : (
-                        <span className="text-gray-500">Optional</span>
+                        <span className="text-muted-foreground">Optional</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{header.description || "-"}</td>
-                    <td className="px-4 py-2 font-mono text-gray-600">{header.example || "-"}</td>
+                    <td className="px-4 py-2 text-muted-foreground">{header.description || "-"}</td>
+                    <td className="px-4 py-2 font-mono text-muted-foreground">{header.example || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -79,25 +79,25 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Path Parameters */}
       {pathParams.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Path Parameters
           </h2>
-          <div className="bg-gray-50 rounded-lg overflow-hidden">
+          <div className="bg-muted rounded-lg overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-100">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Name</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Type</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Required</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Description</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Type</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Required</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Description</th>
                 </tr>
               </thead>
               <tbody>
                 {pathParams.map((param, i) => (
-                  <tr key={i} className="border-t border-gray-200">
+                  <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2 font-mono">{param.name}</td>
                     <td className="px-4 py-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs">
                         {param.type}
                       </span>
                     </td>
@@ -105,10 +105,10 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                       {param.required ? (
                         <span className="text-red-600">Yes</span>
                       ) : (
-                        <span className="text-gray-500">No</span>
+                        <span className="text-muted-foreground">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{param.description || "-"}</td>
+                    <td className="px-4 py-2 text-muted-foreground">{param.description || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -120,25 +120,25 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Query Parameters */}
       {queryParams.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Query Parameters
           </h2>
-          <div className="bg-gray-50 rounded-lg overflow-hidden">
+          <div className="bg-muted rounded-lg overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-100">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Name</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Type</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Required</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Description</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Type</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Required</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Description</th>
                 </tr>
               </thead>
               <tbody>
                 {queryParams.map((param, i) => (
-                  <tr key={i} className="border-t border-gray-200">
+                  <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2 font-mono">{param.name}</td>
                     <td className="px-4 py-2">
-                      <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
+                      <span className="px-2 py-1 bg-primary/10 text-primary rounded text-xs">
                         {param.type}
                       </span>
                     </td>
@@ -146,10 +146,10 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                       {param.required ? (
                         <span className="text-red-600">Yes</span>
                       ) : (
-                        <span className="text-gray-500">No</span>
+                        <span className="text-muted-foreground">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{param.description || "-"}</td>
+                    <td className="px-4 py-2 text-muted-foreground">{param.description || "-"}</td>
                   </tr>
                 ))}
               </tbody>
@@ -161,7 +161,7 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Request Body */}
       {api.request_body && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Request Body
           </h2>
           <CodeBlock
@@ -175,13 +175,13 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
       {/* Responses */}
       {Object.keys(responses).length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Responses
           </h2>
           <div className="space-y-4">
             {Object.entries(responses).map(([statusCode, response]: [string, any]) => (
-              <div key={statusCode} className="border border-gray-200 rounded-lg overflow-hidden">
-                <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 border-b">
+              <div key={statusCode} className="border border-border rounded-lg overflow-hidden">
+                <div className="flex items-center gap-3 px-4 py-3 bg-muted border-b">
                   <span
                     className={`px-2 py-1 rounded text-sm font-medium ${
                       parseInt(statusCode) < 300
@@ -193,7 +193,7 @@ export const RESTViewer = memo<RESTViewerProps>(({ api }) => {
                   >
                     {statusCode}
                   </span>
-                  <span className="text-gray-700">{response?.description || ""}</span>
+                  <span className="text-muted-foreground">{response?.description || ""}</span>
                 </div>
                 {response?.body && (
                   <CodeBlock

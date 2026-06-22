@@ -8,12 +8,12 @@ interface MethodBadgeProps {
 
 const METHOD_COLORS = {
   GET: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  POST: "bg-blue-100 text-blue-700 border-blue-200",
+  POST: "bg-primary/10 text-primary border-primary/20",
   PUT: "bg-amber-100 text-amber-700 border-amber-200",
   DELETE: "bg-red-100 text-red-700 border-red-200",
   PATCH: "bg-purple-100 text-purple-700 border-purple-200",
   query: "bg-emerald-100 text-emerald-700 border-emerald-200",
-  mutation: "bg-blue-100 text-blue-700 border-blue-200",
+  mutation: "bg-primary/10 text-primary border-primary/20",
   subscription: "bg-purple-100 text-purple-700 border-purple-200",
 };
 

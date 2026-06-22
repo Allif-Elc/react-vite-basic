@@ -67,13 +67,13 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
+    <div className="min-h-screen flex items-center justify-center bg-background">
+      <div className="max-w-md w-full bg-card rounded-lg shadow-lg p-8">
         <h1 className="text-3xl font-bold text-center mb-6">Welcome Back</h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="email" className="block text-sm font-medium text-muted-foreground mb-1">
               Email *
             </label>
             <input
@@ -81,14 +81,14 @@ export default function Login() {
               type="email"
               id="email"
               autoComplete="email"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="you@example.com"
             />
             {errors.email && <p className="mt-1 text-sm text-red-600">{errors.email.message}</p>}
           </div>
 
           <div>
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="password" className="block text-sm font-medium text-muted-foreground mb-1">
               Password *
             </label>
             <input
@@ -96,7 +96,7 @@ export default function Login() {
               type="password"
               id="password"
               autoComplete="current-password"
-              className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-input rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="••••••••"
             />
             {errors.password && (
@@ -107,15 +107,15 @@ export default function Login() {
           <button
             type="submit"
             disabled={isSubmitting}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {isSubmitting ? "Signing in..." : "Sign In"}
           </button>
         </form>
 
-        <p className="mt-4 text-center text-sm text-gray-600">
+        <p className="mt-4 text-center text-sm text-muted-foreground">
           Don't have an account?{" "}
-          <a href="/register" className="text-blue-600 hover:underline">
+          <a href="/register" className="text-primary hover:underline">
             Sign up
           </a>
         </p>

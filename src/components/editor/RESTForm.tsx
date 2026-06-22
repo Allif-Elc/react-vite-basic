@@ -180,14 +180,14 @@ export const RESTForm = memo<RESTFormProps>(
           content: (
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-1">
                   API Name *
                 </label>
                 <input
                   {...register("name")}
                   id="name"
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Get User Profile"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
@@ -196,7 +196,7 @@ export const RESTForm = memo<RESTFormProps>(
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-muted-foreground mb-1"
                 >
                   Description
                 </label>
@@ -204,7 +204,7 @@ export const RESTForm = memo<RESTFormProps>(
                   {...register("description")}
                   id="description"
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Describe what this API does..."
                 />
                 {errors.description && (
@@ -214,13 +214,13 @@ export const RESTForm = memo<RESTFormProps>(
 
               <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-3">
-                  <label htmlFor="method" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="method" className="block text-sm font-medium text-muted-foreground mb-1">
                     Method *
                   </label>
                   <select
                     {...register("method")}
                     id="method"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
@@ -235,7 +235,7 @@ export const RESTForm = memo<RESTFormProps>(
                 <div className="col-span-9">
                   <label
                     htmlFor="endpoint"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-muted-foreground mb-1"
                   >
                     Endpoint *
                   </label>
@@ -243,7 +243,7 @@ export const RESTForm = memo<RESTFormProps>(
                     {...register("endpoint")}
                     id="endpoint"
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono"
                     placeholder="/api/users/:id"
                   />
                   {errors.endpoint && (
@@ -301,13 +301,13 @@ export const RESTForm = memo<RESTFormProps>(
           content: (
             <div>
               <div className="flex items-center justify-between mb-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <label className="block text-sm font-medium text-muted-foreground">
                   Request Body (JSON)
                 </label>
                 <button
                   type="button"
                   onClick={handleBeautify}
-                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-800 hover:border-gray-400 transition-all"
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-muted-foreground bg-card border border-border rounded-md hover:bg-muted hover:text-foreground hover:border-primary transition-all"
                   title="Format JSON, XML, GraphQL, or JavaScript"
                 >
                   <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -319,8 +319,8 @@ export const RESTForm = memo<RESTFormProps>(
               <textarea
                 name="request_body"
                 rows={12}
-                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm bg-gray-50 ${
-                  errors.request_body ? "border-red-500" : "border-gray-300"
+                className={`w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono text-sm bg-muted ${
+                  errors.request_body ? "border-red-500" : "border-border"
                 }`}
                 placeholder='{\n  "email": "grace@company.com",\n  "password": "password123"\n}'
                 value={requestBodyValue}
@@ -338,7 +338,7 @@ export const RESTForm = memo<RESTFormProps>(
                     : "Invalid JSON format"}
                 </p>
               )}
-              <p className="mt-1 text-sm text-gray-500">
+              <p className="mt-1 text-sm text-muted-foreground">
                 Enter a valid JSON example for the request body.
               </p>
             </div>
@@ -363,7 +363,7 @@ export const RESTForm = memo<RESTFormProps>(
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? "Saving..." : "Save API"}
           </button>
@@ -371,7 +371,7 @@ export const RESTForm = memo<RESTFormProps>(
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
             >
               Cancel
             </button>

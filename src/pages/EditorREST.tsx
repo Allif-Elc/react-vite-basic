@@ -76,8 +76,8 @@ export default function EditorREST() {
     return (
       <div className="max-w-5xl mx-auto p-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-48 mb-6"></div>
-          <div className="h-64 bg-gray-200 rounded"></div>
+          <div className="h-8 bg-muted rounded w-48 mb-6"></div>
+          <div className="h-64 bg-muted rounded"></div>
         </div>
       </div>
     );
@@ -86,10 +86,10 @@ export default function EditorREST() {
   return (
     <div className="max-w-5xl mx-auto p-6">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{title}</h1>
         <button
           onClick={handleCancel}
-          className="text-gray-600 hover:text-gray-800 transition-colors"
+          className="text-muted-foreground hover:text-foreground transition-colors"
         >
           Cancel
         </button>

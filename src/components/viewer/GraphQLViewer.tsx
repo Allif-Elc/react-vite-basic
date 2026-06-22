@@ -16,22 +16,22 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Header */}
       <div className="flex items-center gap-4 pb-6 border-b">
         <MethodBadge method={api.type} size="md" />
-        <h1 className="text-2xl font-bold text-gray-900">{api.name}</h1>
+        <h1 className="text-2xl font-bold text-foreground">{api.name}</h1>
       </div>
 
       {/* Description */}
       {api.description && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
             Description
           </h2>
-          <p className="text-gray-700">{api.description}</p>
+          <p className="text-muted-foreground">{api.description}</p>
         </div>
       )}
 
       {/* Return Type */}
       <div>
-        <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-2">
+        <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-2">
           Return Type
         </h2>
         <code className="px-3 py-2 bg-purple-50 text-purple-700 rounded-lg text-sm font-mono">
@@ -42,23 +42,23 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Arguments */}
       {args.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Arguments
           </h2>
-          <div className="bg-gray-50 rounded-lg overflow-hidden">
+          <div className="bg-muted rounded-lg overflow-hidden">
             <table className="w-full text-sm">
-              <thead className="bg-gray-100">
+              <thead className="bg-muted">
                 <tr>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Name</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Type</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Required</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Description</th>
-                  <th className="px-4 py-2 text-left font-medium text-gray-700">Default</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Name</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Type</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Required</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Description</th>
+                  <th className="px-4 py-2 text-left font-medium text-muted-foreground">Default</th>
                 </tr>
               </thead>
               <tbody>
                 {args.map((arg, i) => (
-                  <tr key={i} className="border-t border-gray-200">
+                  <tr key={i} className="border-t border-border">
                     <td className="px-4 py-2 font-mono">{arg.name}</td>
                     <td className="px-4 py-2">
                       <span className="px-2 py-1 bg-purple-100 text-purple-700 rounded text-xs">
@@ -69,11 +69,11 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
                       {arg.required ? (
                         <span className="text-red-600">Yes</span>
                       ) : (
-                        <span className="text-gray-500">No</span>
+                        <span className="text-muted-foreground">No</span>
                       )}
                     </td>
-                    <td className="px-4 py-2 text-gray-600">{arg.description || "-"}</td>
-                    <td className="px-4 py-2 font-mono text-gray-600">
+                    <td className="px-4 py-2 text-muted-foreground">{arg.description || "-"}</td>
+                    <td className="px-4 py-2 font-mono text-muted-foreground">
                       {arg.default_value !== undefined ? String(arg.default_value) : "-"}
                     </td>
                   </tr>
@@ -87,16 +87,16 @@ export const GraphQLViewer = memo<GraphQLViewerProps>(({ api }) => {
       {/* Examples */}
       {examples.length > 0 && (
         <div>
-          <h2 className="text-sm font-medium text-gray-500 uppercase tracking-wide mb-3">
+          <h2 className="text-sm font-medium text-muted-foreground uppercase tracking-wide mb-3">
             Examples
           </h2>
           <div className="space-y-4">
             {examples.map((example, i) => (
-              <div key={i} className="border border-gray-200 rounded-lg overflow-hidden">
-                <div className="px-4 py-3 bg-gray-50 border-b">
-                  <h3 className="font-medium text-gray-900">{String(example.name)}</h3>
+              <div key={i} className="border border-border rounded-lg overflow-hidden">
+                <div className="px-4 py-3 bg-muted border-b">
+                  <h3 className="font-medium text-foreground">{String(example.name)}</h3>
                   {example.description && (
-                    <p className="text-sm text-gray-600 mt-1">{String(example.description)}</p>
+                    <p className="text-sm text-muted-foreground mt-1">{String(example.description)}</p>
                   )}
                 </div>
                 <div className="p-4">

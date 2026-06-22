@@ -55,7 +55,7 @@ export const Toast = () => {
           </div>
           <button
             onClick={() => removeToast(toast.id)}
-            className="ml-4 text-white hover:text-gray-200 focus:outline-none focus:ring-2 focus:ring-white rounded"
+            className="ml-4 text-white hover:text-white/80 focus:outline-none focus:ring-2 focus:ring-white rounded"
             aria-label={`Dismiss ${toast.type} notification: ${toast.message}`}
           >
             ×

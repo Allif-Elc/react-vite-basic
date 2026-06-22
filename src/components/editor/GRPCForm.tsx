@@ -50,30 +50,30 @@ const MessageFields = ({
   return (
     <div className="space-y-2">
       <div className="flex justify-between items-center">
-        <label className="block text-sm font-medium text-gray-700">Fields</label>
+        <label className="block text-sm font-medium text-muted-foreground">Fields</label>
         <button
           type="button"
           onClick={() => append({ name: "", type: "string", label: "optional", description: "" })}
-          className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
+          className="text-primary hover:text-primary text-sm flex items-center gap-1"
         >
           <Plus size={16} /> Add Field
         </button>
       </div>
       <div className="space-y-2">
         {fields.length === 0 ? (
-          <div className="text-sm text-gray-500 italic p-2 bg-gray-50 rounded">
+          <div className="text-sm text-muted-foreground italic p-2 bg-muted rounded">
             No fields added yet
           </div>
         ) : (
           fields.map((field, index) => (
             <div
               key={field.id}
-              className="flex gap-2 items-start p-3 border border-gray-200 rounded-lg bg-white"
+              className="flex gap-2 items-start p-3 border border-border rounded-lg bg-card"
             >
               <button
                 type="button"
                 onClick={() => remove(index)}
-                className="mt-6 text-gray-400 hover:text-red-500 transition-colors"
+                className="mt-6 text-muted-foreground hover:text-red-500 transition-colors"
               >
                 <X size={16} />
               </button>
@@ -83,13 +83,13 @@ const MessageFields = ({
                     {...register(`${name}.${index}.name`)}
                     type="text"
                     placeholder="field_name"
-                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
                 <div className="col-span-3">
                   <select
                     {...register(`${name}.${index}.type`)}
-                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     {GRPC_TYPES.map((type) => (
                       <option key={type} value={type}>
@@ -101,7 +101,7 @@ const MessageFields = ({
                 <div className="col-span-2">
                   <select
                     {...register(`${name}.${index}.label`)}
-                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     {GRPC_LABELS.map((label) => (
                       <option key={label} value={label}>
@@ -115,7 +115,7 @@ const MessageFields = ({
                     {...register(`${name}.${index}.description`)}
                     type="text"
                     placeholder="Description"
-                    className="w-full px-2 py-1.5 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-2 py-1.5 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                   />
                 </div>
               </div>
@@ -184,7 +184,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                 <div>
                   <label
                     htmlFor="service_name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-muted-foreground mb-1"
                   >
                     Service Name *
                   </label>
@@ -192,7 +192,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                     {...register("service_name")}
                     id="service_name"
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono"
                     placeholder="UserService"
                   />
                   {errors.service_name && (
@@ -202,7 +202,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                 <div>
                   <label
                     htmlFor="method_name"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-muted-foreground mb-1"
                   >
                     Method Name *
                   </label>
@@ -210,7 +210,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                     {...register("method_name")}
                     id="method_name"
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono"
                     placeholder="GetUser"
                   />
                   {errors.method_name && (
@@ -222,7 +222,7 @@ export const GRPCForm = memo<GRPCFormProps>(
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-muted-foreground mb-1"
                 >
                   Description
                 </label>
@@ -230,7 +230,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                   {...register("description")}
                   id="description"
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Describe what this method does..."
                 />
                 {errors.description && (
@@ -255,13 +255,13 @@ export const GRPCForm = memo<GRPCFormProps>(
           label: "Proto Definition",
           content: (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-muted-foreground mb-2">
                 Proto Definition
               </label>
               <textarea
                 {...register("proto_definition")}
                 rows={16}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono text-sm bg-gray-50"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono text-sm bg-muted"
                 placeholder='syntax = "proto3";&#10;&#10;service UserService {&#10;  rpc GetUser GetUserRequest) returns (GetUserResponse);&#10;}'
               />
             </div>
@@ -273,28 +273,28 @@ export const GRPCForm = memo<GRPCFormProps>(
           content: (
             <div className="space-y-2">
               <div className="flex justify-between items-center">
-                <label className="block text-sm font-medium text-gray-700">Code Examples</label>
+                <label className="block text-sm font-medium text-muted-foreground">Code Examples</label>
                 <button
                   type="button"
                   onClick={addExample}
-                  className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
+                  className="text-primary hover:text-primary text-sm flex items-center gap-1"
                 >
                   <Plus size={16} /> Add Example
                 </button>
               </div>
               <div className="space-y-3">
                 {exampleFields.length === 0 ? (
-                  <div className="text-sm text-gray-500 italic p-2 bg-gray-50 rounded">
+                  <div className="text-sm text-muted-foreground italic p-2 bg-muted rounded">
                     No examples added yet
                   </div>
                 ) : (
                   exampleFields.map((field, index) => (
-                    <div key={field.id} className="border border-gray-200 rounded-lg bg-white p-4">
+                    <div key={field.id} className="border border-border rounded-lg bg-card p-4">
                       <div className="flex justify-between items-center mb-3">
                         <div className="flex gap-2">
                           <select
                             {...register(`examples.${index}.language`)}
-                            className="px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                           >
                             <option value="javascript">JavaScript</option>
                             <option value="python">Python</option>
@@ -307,13 +307,13 @@ export const GRPCForm = memo<GRPCFormProps>(
                             {...register(`examples.${index}.description`)}
                             type="text"
                             placeholder="Description (optional)"
-                            className="px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            className="px-2 py-1 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
                           />
                         </div>
                         <button
                           type="button"
                           onClick={() => removeExample(index)}
-                          className="text-gray-400 hover:text-red-500"
+                          className="text-muted-foreground hover:text-red-500"
                         >
                           <X size={16} />
                         </button>
@@ -321,7 +321,7 @@ export const GRPCForm = memo<GRPCFormProps>(
                       <textarea
                         {...register(`examples.${index}.code`)}
                         rows={10}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono bg-gray-50"
+                        className="w-full px-3 py-2 text-sm border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring font-mono bg-muted"
                         placeholder="// Example code here"
                       />
                     </div>
@@ -350,7 +350,7 @@ export const GRPCForm = memo<GRPCFormProps>(
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? "Saving..." : "Save API"}
           </button>
@@ -358,7 +358,7 @@ export const GRPCForm = memo<GRPCFormProps>(
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
             >
               Cancel
             </button>

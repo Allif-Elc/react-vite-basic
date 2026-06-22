@@ -94,7 +94,7 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
             {...register("value")}
             placeholder="Select an attribute first"
             disabled
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg bg-gray-50 focus:outline-none"
+            className="w-full px-3 py-2 border border-border rounded-lg bg-muted focus:outline-none"
           />
         );
       }
@@ -104,7 +104,7 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
           return (
             <select
               {...register("value")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">Select value</option>
               <option value="true">True</option>
@@ -115,7 +115,7 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
           return (
             <select
               {...register("value")}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <option value="">Select value</option>
               {enumValues.map((v) => (
@@ -132,7 +132,7 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
               type="number"
               step="any"
               placeholder="Enter a number"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             />
           );
         case "string":
@@ -142,26 +142,26 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
               {...register("value")}
               type="text"
               placeholder="Enter value"
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
             />
           );
       }
     };
 
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+        <div className="p-6 border-b border-border flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-indigo-100 rounded-lg">
               <Shield className="w-5 h-5 text-indigo-600" />
             </div>
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h2 className="text-xl font-semibold text-foreground">
               {initialData ? "Edit User Attribute" : "Assign User Attribute"}
             </h2>
           </div>
           <button
             onClick={onClose}
-            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-muted-foreground hover:text-foreground hover:bg-muted rounded-lg transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
@@ -170,14 +170,14 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
         <form onSubmit={handleSubmit(onSubmit)} className="p-6 space-y-4">
           {/* User */}
           <div>
-            <label htmlFor="id_user" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="id_user" className="block text-sm font-medium text-muted-foreground mb-1">
               User *
             </label>
             <select
               {...register("id_user", { valueAsNumber: true })}
               id="id_user"
               disabled={!!initialData}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:text-muted-foreground"
             >
               <option value="0">Select a user</option>
               {users.map((user) => (
@@ -191,14 +191,14 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
 
           {/* Attribute */}
           <div>
-            <label htmlFor="id_attribute" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="id_attribute" className="block text-sm font-medium text-muted-foreground mb-1">
               Attribute *
             </label>
             <select
               {...register("id_attribute", { valueAsNumber: true })}
               id="id_attribute"
               disabled={!!initialData}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-50 disabled:text-gray-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring disabled:bg-muted disabled:text-muted-foreground"
             >
               <option value="0">Select an attribute</option>
               {attributes.map((attr) => (
@@ -211,7 +211,7 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
               <p className="mt-1 text-sm text-red-600">{errors.id_attribute.message}</p>
             )}
             {selectedAttribute && (
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Type: {selectedAttribute.type}
                 {selectedAttribute.description && ` - ${selectedAttribute.description}`}
               </p>
@@ -220,13 +220,13 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
 
           {/* Value */}
           <div>
-            <label htmlFor="value" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="value" className="block text-sm font-medium text-muted-foreground mb-1">
               Value *
             </label>
             {renderValueInput()}
             {errors.value && <p className="mt-1 text-sm text-red-600">{errors.value.message}</p>}
             {selectedAttribute?.type === "enum" && (
-              <p className="mt-1 text-xs text-gray-500">
+              <p className="mt-1 text-xs text-muted-foreground">
                 Allowed values: {enumValues.join(", ")}
               </p>
             )}
@@ -237,14 +237,14 @@ export const UserAttributeForm = memo<UserAttributeFormProps>(
             <button
               type="submit"
               disabled={isSubmitting}
-              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               {isSubmitting ? "Saving..." : initialData ? "Update" : "Assign"}
             </button>
             <button
               type="button"
               onClick={onClose}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
             >
               Cancel
             </button>

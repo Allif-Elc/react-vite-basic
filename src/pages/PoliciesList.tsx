@@ -24,17 +24,17 @@ const PolicyCard = memo(
     };
 
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+      <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition-shadow">
         <div className="flex items-start justify-between mb-3">
           <div className="flex items-center gap-3">
             <div className="p-2 bg-indigo-100 rounded-lg">
               <FileText className="w-5 h-5 text-indigo-600" />
             </div>
             <div>
-              <h3 className="font-semibold text-gray-900">{policy.name}</h3>
+              <h3 className="font-semibold text-foreground">{policy.name}</h3>
               <span
                 className={`text-xs px-2 py-0.5 rounded-full ${
-                  policy.is_active ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-600"
+                  policy.is_active ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"
                 }`}
               >
                 {policy.is_active ? "Active" : "Inactive"}
@@ -44,14 +44,14 @@ const PolicyCard = memo(
           <div className="flex gap-1">
             <button
               onClick={() => onEdit(policy)}
-              className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded transition-colors"
+              className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded transition-colors"
               title="Edit policy"
             >
               <Edit className="w-4 h-4" />
             </button>
             <button
               onClick={() => onDelete(policy)}
-              className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded transition-colors"
+              className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded transition-colors"
               title="Delete policy"
             >
               <Trash2 className="w-4 h-4" />
@@ -60,8 +60,8 @@ const PolicyCard = memo(
         </div>
 
         <div className="mt-3">
-          <p className="text-xs font-medium text-gray-500 mb-2">Policy Rule:</p>
-          <pre className="text-xs bg-gray-50 p-3 rounded overflow-x-auto border border-gray-200">
+          <p className="text-xs font-medium text-muted-foreground mb-2">Policy Rule:</p>
+          <pre className="text-xs bg-muted p-3 rounded overflow-x-auto border border-border">
             {parsePolicyRule(policy.policy_rule)}
           </pre>
         </div>
@@ -127,8 +127,8 @@ export default function PoliciesList() {
     return (
       <div className="flex items-center justify-center h-64">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-500">Loading policies...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p className="text-muted-foreground">Loading policies...</p>
         </div>
       </div>
     );
@@ -138,12 +138,12 @@ export default function PoliciesList() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Policies</h1>
-          <p className="text-gray-500 mt-1">Manage authorization policies</p>
+          <h1 className="text-2xl font-bold text-foreground">Policies</h1>
+          <p className="text-muted-foreground mt-1">Manage authorization policies</p>
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-4 h-4" />
           Create Policy
@@ -151,15 +151,15 @@ export default function PoliciesList() {
       </div>
 
       {policies.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-          <Shield className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No Policies Found</h2>
-          <p className="text-gray-500 mb-4">
+        <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
+          <Shield className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">No Policies Found</h2>
+          <p className="text-muted-foreground mb-4">
             Create your first authorization policy to get started
           </p>
           <button
             onClick={handleCreate}
-            className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             <Plus className="w-4 h-4" />
             Create Policy
@@ -194,16 +194,16 @@ export default function PoliciesList() {
       {/* Delete Confirmation Modal */}
       {deleteConfirm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 max-w-md w-full">
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Delete Policy</h2>
-            <p className="text-gray-600 mb-4">
+          <div className="bg-card rounded-lg shadow-sm border border-border p-6 max-w-md w-full">
+            <h2 className="text-lg font-semibold text-foreground mb-2">Delete Policy</h2>
+            <p className="text-muted-foreground mb-4">
               Are you sure you want to delete the policy <strong>{deleteConfirm.name}</strong>? This
               action cannot be undone.
             </p>
             <div className="flex gap-3 justify-end">
               <button
                 onClick={() => setDeleteConfirm(null)}
-                className="px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+                className="px-4 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
               >
                 Cancel
               </button>

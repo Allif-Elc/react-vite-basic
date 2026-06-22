@@ -12,9 +12,9 @@ export const CodeBlock = memo<CodeBlockProps>(({ code, language, title }) => {
     language === "graphql" ? "graphql" : language === "protobuf" ? "javascript" : "javascript";
 
   return (
-    <div className="rounded-lg overflow-hidden border border-gray-200 bg-gray-50">
+    <div className="rounded-lg overflow-hidden border border-border bg-muted">
       {title && (
-        <div className="bg-gray-100 px-4 py-2 text-sm font-medium text-gray-700 border-b border-gray-200">
+        <div className="bg-muted px-4 py-2 text-sm font-medium text-muted-foreground border-b border-border">
           {title}
         </div>
       )}

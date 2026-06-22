@@ -22,8 +22,8 @@ export const APITabs = memo<APITabsProps>(({ tabs, defaultTab }) => {
   const activeTabData = tabs.find((t) => t.id === activeTab);
 
   return (
-    <div className="border border-gray-200 rounded-lg overflow-hidden">
-      <div className="flex border-b border-gray-200 bg-gray-50" role="tablist">
+    <div className="border border-border rounded-lg overflow-hidden">
+      <div className="flex border-b border-border bg-muted" role="tablist">
         {tabs.map((tab) => (
           <button
             key={tab.id}
@@ -34,15 +34,15 @@ export const APITabs = memo<APITabsProps>(({ tabs, defaultTab }) => {
             className={clsx(
               "px-4 py-3 text-sm font-medium transition-colors",
               activeTab === tab.id
-                ? "bg-white text-blue-600 border-b-2 border-blue-600"
-                : "text-gray-600 hover:text-gray-800 hover:bg-gray-100"
+                ? "bg-card text-primary border-b-2 border-primary"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted"
             )}
           >
             {tab.label}
           </button>
         ))}
       </div>
-      <div className="p-6 bg-white" role="tabpanel">
+      <div className="p-6 bg-card" role="tabpanel">
         {activeTabData?.content}
       </div>
     </div>

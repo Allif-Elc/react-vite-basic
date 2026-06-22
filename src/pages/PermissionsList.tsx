@@ -22,7 +22,7 @@ const PermissionCard = memo(
     onEdit: (permission: Permission) => void;
     onDelete: (id: number) => void;
   }) => (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-5 hover:shadow-md transition-shadow">
+    <div className="bg-card rounded-lg shadow-sm border border-border p-5 hover:shadow-md transition-shadow">
       <div className="flex items-start justify-between mb-3">
         <div className="flex items-center gap-3">
           <div
@@ -35,7 +35,7 @@ const PermissionCard = memo(
             )}
           </div>
           <div>
-            <h3 className="font-semibold text-gray-900">{permission.name}</h3>
+            <h3 className="font-semibold text-foreground">{permission.name}</h3>
             <span
               className={`text-xs px-2 py-0.5 rounded-full ${
                 permission.effect === "allow"
@@ -50,14 +50,14 @@ const PermissionCard = memo(
         <div className="flex gap-2">
           <button
             onClick={() => onEdit(permission)}
-            className="p-1.5 text-gray-500 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
+            className="p-1.5 text-muted-foreground hover:text-primary hover:bg-primary/10 rounded-lg transition-colors"
             aria-label="Edit permission"
           >
             <Edit2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => onDelete(permission.id_permission)}
-            className="p-1.5 text-gray-500 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+            className="p-1.5 text-muted-foreground hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors"
             aria-label="Delete permission"
           >
             <Trash2 className="w-4 h-4" />
@@ -65,24 +65,24 @@ const PermissionCard = memo(
         </div>
       </div>
       {permission.description && (
-        <p className="text-sm text-gray-600 mb-3">{permission.description}</p>
+        <p className="text-sm text-muted-foreground mb-3">{permission.description}</p>
       )}
       {permission.actions && permission.actions.length > 0 && (
         <div className="flex flex-wrap gap-1.5 mb-2">
           {permission.actions.map((action) => (
-            <span key={action} className="text-xs px-2 py-0.5 bg-gray-100 text-gray-700 rounded">
+            <span key={action} className="text-xs px-2 py-0.5 bg-muted text-muted-foreground rounded">
               {action}
             </span>
           ))}
         </div>
       )}
       {(!permission.actions || permission.actions.length === 0) && (
-        <p className="text-xs text-gray-400 italic mb-2">No actions defined</p>
+        <p className="text-xs text-muted-foreground italic mb-2">No actions defined</p>
       )}
       {permission.condition && (
-        <div className="mt-3 pt-3 border-t border-gray-100">
-          <p className="text-xs font-medium text-gray-500 mb-1">Condition:</p>
-          <code className="text-xs bg-gray-50 px-2 py-1 rounded block overflow-x-auto">
+        <div className="mt-3 pt-3 border-t border-border">
+          <p className="text-xs font-medium text-muted-foreground mb-1">Condition:</p>
+          <code className="text-xs bg-muted px-2 py-1 rounded block overflow-x-auto">
             {permission.condition}
           </code>
         </div>
@@ -160,12 +160,12 @@ export default function PermissionsList() {
     <div>
       <div className="flex items-center justify-between mb-6">
         <div>
-          <h1 className="text-2xl font-bold text-gray-900">Permissions</h1>
-          <p className="text-gray-500 mt-1">Define access permissions for users</p>
+          <h1 className="text-2xl font-bold text-foreground">Permissions</h1>
+          <p className="text-muted-foreground mt-1">Define access permissions for users</p>
         </div>
         <button
           onClick={handleCreate}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Plus className="w-5 h-5" />
           New Permission
@@ -195,13 +195,13 @@ export default function PermissionsList() {
       )}
 
       {permissions.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-12 text-center">
-          <ShieldCheck className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-          <h2 className="text-xl font-semibold text-gray-900 mb-2">No Permissions Yet</h2>
-          <p className="text-gray-500 mb-6">Create your first permission to define access rules</p>
+        <div className="bg-card rounded-lg shadow-sm border border-border p-12 text-center">
+          <ShieldCheck className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+          <h2 className="text-xl font-semibold text-foreground mb-2">No Permissions Yet</h2>
+          <p className="text-muted-foreground mb-6">Create your first permission to define access rules</p>
           <button
             onClick={handleCreate}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
           >
             Create Permission
           </button>
@@ -210,7 +210,7 @@ export default function PermissionsList() {
         <div className="space-y-6">
           {groupedPermissions.allow.length > 0 && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-green-600" />
                 Allow Permissions
               </h2>
@@ -228,7 +228,7 @@ export default function PermissionsList() {
           )}
           {groupedPermissions.deny.length > 0 && (
             <div>
-              <h2 className="text-lg font-semibold text-gray-900 mb-3 flex items-center gap-2">
+              <h2 className="text-lg font-semibold text-foreground mb-3 flex items-center gap-2">
                 <ShieldX className="w-5 h-5 text-red-600" />
                 Deny Permissions
               </h2>

@@ -145,10 +145,10 @@ export default function Viewer() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-muted">
         <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-          <p className="text-gray-500 mt-4">Loading documentation...</p>
+          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+          <p className="text-muted-foreground mt-4">Loading documentation...</p>
         </div>
       </div>
     );
@@ -156,11 +156,11 @@ export default function Viewer() {
 
   if (error) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center bg-muted">
         <div className="text-center">
           <div className="text-red-500 text-6xl mb-4">{"\u274C"}</div>
-          <h1 className="text-xl font-semibold text-gray-800 mb-2">Documentation Not Found</h1>
-          <p className="text-gray-600">{error}</p>
+          <h1 className="text-xl font-semibold text-foreground mb-2">Documentation Not Found</h1>
+          <p className="text-muted-foreground">{error}</p>
         </div>
       </div>
     );
@@ -169,27 +169,27 @@ export default function Viewer() {
   if (!data) return null;
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
+    <div className="min-h-screen bg-muted flex">
       {/* Sidebar */}
-      <aside className="w-72 bg-white border-r border-gray-200 flex flex-col">
-        <div className="p-4 border-b border-gray-200">
-          <h1 className="font-bold text-lg text-gray-900">
+      <aside className="w-72 bg-card border-r border-border flex flex-col">
+        <div className="p-4 border-b border-border">
+          <h1 className="font-bold text-lg text-foreground">
             {data.project?.name || "API Documentation"}
           </h1>
           {data.project?.description && (
-            <p className="text-sm text-gray-500 mt-1 line-clamp-2">{data.project.description}</p>
+            <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{data.project.description}</p>
           )}
         </div>
 
-        <div className="flex border-b border-gray-200">
+        <div className="flex border-b border-border">
           {(["rest", "graphql", "grpc"] as APIType[]).map((type) => (
             <button
               key={type}
               onClick={() => handleTabClick(type)}
               className={`flex-1 py-3 text-sm font-medium capitalize transition-colors ${
                 selectedType === type
-                  ? "bg-blue-50 text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-600 hover:bg-gray-50"
+                  ? "bg-primary/10 text-primary border-b-2 border-primary"
+                  : "text-muted-foreground hover:bg-muted"
               }`}
             >
               {type}
@@ -199,7 +199,7 @@ export default function Viewer() {
 
         <div className="flex-1 overflow-y-auto p-2">
           {apiList.length === 0 ? (
-            <div className="text-center py-8 text-gray-500 text-sm">No {selectedType} APIs</div>
+            <div className="text-center py-8 text-muted-foreground text-sm">No {selectedType} APIs</div>
           ) : (
             <div className="space-y-1">
               {apiList.map((api) => {
@@ -215,15 +215,15 @@ export default function Viewer() {
                     onClick={() => handleAPISelect(api)}
                     className={`w-full text-left p-3 rounded-lg transition-colors ${
                       isSelected
-                        ? "bg-blue-50 border border-blue-200"
-                        : "hover:bg-gray-50 border border-transparent"
+                        ? "bg-primary/10 border border-primary/20"
+                        : "hover:bg-muted border border-transparent"
                     }`}
                   >
                     <div className="flex items-center gap-2">
                       <MethodBadge method={method as any} size="sm" />
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-800 truncate text-sm">{name}</div>
-                        <div className="text-xs text-gray-500 truncate font-mono">{sub}</div>
+                        <div className="font-medium text-foreground truncate text-sm">{name}</div>
+                        <div className="text-xs text-muted-foreground truncate font-mono">{sub}</div>
                       </div>
                     </div>
                   </button>
@@ -237,7 +237,7 @@ export default function Viewer() {
             <button
               onClick={loadMoreAPIs}
               disabled={loadingMore}
-              className="w-full mt-2 py-2 px-4 text-sm text-blue-600 hover:bg-blue-50 rounded-lg transition-colors disabled:opacity-50"
+              className="w-full mt-2 py-2 px-4 text-sm text-primary hover:bg-primary/10 rounded-lg transition-colors disabled:opacity-50"
             >
               {loadingMore ? "Loading..." : "Load More"}
             </button>
@@ -255,9 +255,9 @@ export default function Viewer() {
           </div>
         ) : (
           <div className="h-full flex items-center justify-center">
-            <div className="text-center text-gray-500">
+            <div className="text-center text-muted-foreground">
               <svg
-                className="w-16 h-16 mx-auto mb-4 text-gray-300"
+                className="w-16 h-16 mx-auto mb-4 text-muted-foreground"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

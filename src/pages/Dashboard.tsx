@@ -97,23 +97,23 @@ const ProjectCard = memo(
     return (
       <div
         onClick={handleClick}
-        className="relative bg-white rounded-lg shadow p-4 hover:shadow-lg transition-shadow cursor-pointer border border-gray-200 group"
+        className="relative bg-card rounded-lg shadow p-4 hover:shadow-lg transition-shadow cursor-pointer border border-border group"
       >
         <button
           onClick={handleDelete}
-          className="absolute top-2 right-2 text-gray-400 hover:text-red-500 transition-colors p-1 opacity-0 group-hover:opacity-100"
+          className="absolute top-2 right-2 text-muted-foreground hover:text-destructive transition-colors p-1 opacity-0 group-hover:opacity-100"
           aria-label="Delete project"
         >
           <Trash2 className="w-4 h-4" />
         </button>
-        <h3 className="text-lg font-semibold text-gray-800 mb-2 pr-6">{project.name}</h3>
-        <p className="text-gray-600 text-sm mb-3 line-clamp-2">
+        <h3 className="text-lg font-semibold text-foreground mb-2 pr-6">{project.name}</h3>
+        <p className="text-muted-foreground text-sm mb-3 line-clamp-2">
           {project.description || "No description"}
         </p>
         <div className="flex items-center gap-2 mb-3">
           <button
             onClick={handleViewDocs}
-            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1 text-xs text-primary hover:text-primary transition-colors"
             aria-label="View documentation"
           >
             <ExternalLink className="w-3 h-3" />
@@ -121,16 +121,16 @@ const ProjectCard = memo(
           </button>
           <button
             onClick={handleEdit}
-            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 transition-colors"
+            className="flex items-center gap-1 text-xs text-primary hover:text-primary transition-colors"
             aria-label="Edit project"
           >
             <Pencil className="w-3 h-3" />
             Edit
           </button>
         </div>
-        <div className="flex items-center justify-between text-xs text-gray-500">
+        <div className="flex items-center justify-between text-xs text-muted-foreground">
           <span
-            className={`px-2 py-1 rounded ${project.isPublic ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}`}
+            className={`px-2 py-1 rounded ${project.isPublic ? "bg-green-100 text-green-700" : "bg-muted text-muted-foreground"}`}
           >
             {project.isPublic ? "Public" : "Private"}
           </span>
@@ -219,20 +219,20 @@ export default function Dashboard() {
         <h1 className="text-3xl font-bold">Dashboard</h1>
         <button
           onClick={handleCreateProject}
-          className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           New Project
         </button>
       </div>
 
       {projects.length === 0 ? (
-        <div className="text-center py-12 bg-gray-50 rounded-lg">
-          <p className="text-gray-500 mb-4">
+        <div className="text-center py-12 bg-muted rounded-lg">
+          <p className="text-muted-foreground mb-4">
             No projects yet. Create your first project to get started!
           </p>
           <button
             onClick={handleCreateProject}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90"
           >
             Create Project
           </button>

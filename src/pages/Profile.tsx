@@ -47,20 +47,20 @@ const ProfileView = memo(({ profile, onEdit }: { profile: Profile; onEdit: () =>
   );
 
   return (
-    <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-      <div className="p-6 border-b border-gray-200 flex items-center justify-between">
+    <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+      <div className="p-6 border-b border-border flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-            <UserCircle className="w-12 h-12 text-gray-400" />
+          <div className="w-20 h-20 rounded-full bg-muted flex items-center justify-center">
+            <UserCircle className="w-12 h-12 text-muted-foreground" />
           </div>
           <div>
-            <h2 className="text-2xl font-bold text-gray-900">{user?.name || "User Profile"}</h2>
-            <p className="text-gray-500">{user?.email}</p>
+            <h2 className="text-2xl font-bold text-foreground">{user?.name || "User Profile"}</h2>
+            <p className="text-muted-foreground">{user?.email}</p>
           </div>
         </div>
         <button
           onClick={onEdit}
-          className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+          className="flex items-center gap-2 px-4 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
         >
           <Edit2 className="w-4 h-4" />
           Edit Profile
@@ -72,12 +72,12 @@ const ProfileView = memo(({ profile, onEdit }: { profile: Profile; onEdit: () =>
           const Icon = field.icon;
           return (
             <div key={field.label} className="flex items-start gap-3">
-              <div className="p-2 bg-gray-100 rounded-lg">
-                <Icon className="w-5 h-5 text-gray-600" />
+              <div className="p-2 bg-muted rounded-lg">
+                <Icon className="w-5 h-5 text-muted-foreground" />
               </div>
               <div>
-                <p className="text-sm font-medium text-gray-500">{field.label}</p>
-                <p className="text-gray-900 break-words">{field.value}</p>
+                <p className="text-sm font-medium text-muted-foreground">{field.label}</p>
+                <p className="text-foreground break-words">{field.value}</p>
               </div>
             </div>
           );
@@ -123,35 +123,35 @@ const ProfileEdit = memo(
     ] as const;
 
     return (
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-2xl font-bold text-gray-900">Edit Profile</h2>
+      <div className="bg-card rounded-lg shadow-sm border border-border overflow-hidden">
+        <div className="p-6 border-b border-border">
+          <h2 className="text-2xl font-bold text-foreground">Edit Profile</h2>
         </div>
 
         <form onSubmit={handleSubmit(onSave)} className="p-6 space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="age" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="age" className="block text-sm font-medium text-muted-foreground mb-1">
                 Age
               </label>
               <input
                 {...register("age", { valueAsNumber: true })}
                 id="age"
                 type="number"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="25"
               />
               {errors.age && <p className="mt-1 text-sm text-red-600">{errors.age.message}</p>}
             </div>
 
             <div>
-              <label htmlFor="gender" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="gender" className="block text-sm font-medium text-muted-foreground mb-1">
                 Gender
               </label>
               <select
                 {...register("gender")}
                 id="gender"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               >
                 <option value="">Select gender</option>
                 {genderOptions.map((option) => (
@@ -167,14 +167,14 @@ const ProfileEdit = memo(
           </div>
 
           <div>
-            <label htmlFor="bio" className="block text-sm font-medium text-gray-700 mb-1">
+            <label htmlFor="bio" className="block text-sm font-medium text-muted-foreground mb-1">
               Bio
             </label>
             <textarea
               {...register("bio")}
               id="bio"
               rows={4}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
               placeholder="Tell us about yourself..."
             />
             {errors.bio && <p className="mt-1 text-sm text-red-600">{errors.bio.message}</p>}
@@ -182,14 +182,14 @@ const ProfileEdit = memo(
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <label htmlFor="phonenumber" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="phonenumber" className="block text-sm font-medium text-muted-foreground mb-1">
                 Phone
               </label>
               <input
                 {...register("phonenumber")}
                 id="phonenumber"
                 type="tel"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="+1234567890"
               />
               {errors.phonenumber && (
@@ -198,14 +198,14 @@ const ProfileEdit = memo(
             </div>
 
             <div>
-              <label htmlFor="website" className="block text-sm font-medium text-gray-700 mb-1">
+              <label htmlFor="website" className="block text-sm font-medium text-muted-foreground mb-1">
                 Website
               </label>
               <input
                 {...register("website")}
                 id="website"
                 type="url"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                 placeholder="https://example.com"
               />
               {errors.website && (
@@ -218,7 +218,7 @@ const ProfileEdit = memo(
             <button
               type="submit"
               disabled={isSubmitting}
-              className="flex items-center gap-2 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex items-center gap-2 px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
               <Save className="w-4 h-4" />
               {isSubmitting ? "Saving..." : "Save Changes"}
@@ -226,7 +226,7 @@ const ProfileEdit = memo(
             <button
               type="button"
               onClick={onCancel}
-              className="flex items-center gap-2 px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="flex items-center gap-2 px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
             >
               <X className="w-4 h-4" />
               Cancel
@@ -295,8 +295,8 @@ export default function Profile() {
   return (
     <div className="max-w-4xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-gray-900">Profile</h1>
-        <p className="text-gray-500 mt-1">Manage your personal information</p>
+        <h1 className="text-3xl font-bold text-foreground">Profile</h1>
+        <p className="text-muted-foreground mt-1">Manage your personal information</p>
       </div>
 
       {error && (
@@ -312,13 +312,13 @@ export default function Profile() {
           {profile ? (
             <ProfileView profile={profile} onEdit={handleEdit} />
           ) : (
-            <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-              <UserCircle className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h2 className="text-xl font-semibold text-gray-900 mb-2">No Profile Found</h2>
-              <p className="text-gray-500 mb-6">Create your profile to get started</p>
+            <div className="bg-card rounded-lg shadow-sm border border-border p-8 text-center">
+              <UserCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
+              <h2 className="text-xl font-semibold text-foreground mb-2">No Profile Found</h2>
+              <p className="text-muted-foreground mb-6">Create your profile to get started</p>
               <button
                 onClick={handleEdit}
-                className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors"
               >
                 Create Profile
               </button>

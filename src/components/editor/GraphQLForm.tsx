@@ -53,14 +53,14 @@ export const GraphQLForm = memo<GraphQLFormProps>(
           content: (
             <div className="space-y-4">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="name" className="block text-sm font-medium text-muted-foreground mb-1">
                   Operation Name *
                 </label>
                 <input
                   {...register("name")}
                   id="name"
                   type="text"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="getUser"
                 />
                 {errors.name && <p className="mt-1 text-sm text-red-600">{errors.name.message}</p>}
@@ -69,7 +69,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
               <div>
                 <label
                   htmlFor="description"
-                  className="block text-sm font-medium text-gray-700 mb-1"
+                  className="block text-sm font-medium text-muted-foreground mb-1"
                 >
                   Description
                 </label>
@@ -77,7 +77,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
                   {...register("description")}
                   id="description"
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   placeholder="Describe what this operation does..."
                 />
                 {errors.description && (
@@ -87,13 +87,13 @@ export const GraphQLForm = memo<GraphQLFormProps>(
 
               <div className="grid grid-cols-12 gap-4">
                 <div className="col-span-4">
-                  <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">
+                  <label htmlFor="type" className="block text-sm font-medium text-muted-foreground mb-1">
                     Type *
                   </label>
                   <select
                     {...register("type")}
                     id="type"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <option value="query">Query</option>
                     <option value="mutation">Mutation</option>
@@ -106,7 +106,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
                 <div className="col-span-8">
                   <label
                     htmlFor="return_type"
-                    className="block text-sm font-medium text-gray-700 mb-1"
+                    className="block text-sm font-medium text-muted-foreground mb-1"
                   >
                     Return Type *
                   </label>
@@ -114,7 +114,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
                     {...register("return_type")}
                     id="return_type"
                     type="text"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 font-mono"
+                    className="w-full px-3 py-2 border border-border rounded-lg focus:outline-none focus:ring-2 focus:ring-ring font-mono"
                     placeholder="User"
                   />
                   {errors.return_type && (
@@ -157,7 +157,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
           <button
             type="submit"
             disabled={isSubmitting}
-            className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="px-6 py-2 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             {isSubmitting ? "Saving..." : "Save API"}
           </button>
@@ -165,7 +165,7 @@ export const GraphQLForm = memo<GraphQLFormProps>(
             <button
               type="button"
               onClick={onCancel}
-              className="px-6 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
+              className="px-6 py-2 border border-border rounded-lg hover:bg-muted transition-colors"
             >
               Cancel
             </button>

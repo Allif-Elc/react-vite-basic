@@ -3,7 +3,7 @@ interface SkeletonProps {
 }
 
 const Skeleton = ({ className = "" }: SkeletonProps) => (
-  <div className={`animate-pulse bg-gray-300 rounded ${className}`} />
+  <div className={`animate-pulse bg-muted rounded ${className}`} />
 );
 
 export const ProjectSkeleton = () => (
@@ -26,7 +26,7 @@ export const TableSkeleton = ({ rows = 5 }: { rows?: number }) => (
 );
 
 export const CardSkeleton = () => (
-  <div className="animate-pulse bg-white rounded-lg shadow p-4">
+  <div className="animate-pulse bg-card rounded-lg shadow p-4">
     <Skeleton className="h-6 w-1/3 mb-3" />
     <Skeleton className="h-4 w-full mb-2" />
     <Skeleton className="h-4 w-2/3" />
@@ -34,7 +34,7 @@ export const CardSkeleton = () => (
 );
 
 export const PageSkeleton = () => (
-  <div className="animate-pulse min-h-screen bg-gray-50 p-6">
+  <div className="animate-pulse min-h-screen bg-muted p-6">
     <div className="max-w-4xl mx-auto space-y-6">
       <Skeleton className="h-8 w-48" />
       <Skeleton className="h-4 w-96" />
@@ -48,7 +48,7 @@ export const PageSkeleton = () => (
 );
 
 export const FormSkeleton = () => (
-  <div className="animate-pulse space-y-4 p-6 bg-white rounded-lg shadow">
+  <div className="animate-pulse space-y-4 p-6 bg-card rounded-lg shadow">
     <Skeleton className="h-8 w-40" />
     <div className="space-y-3">
       {[...Array(4)].map((_, i) => (
@@ -63,7 +63,7 @@ export const FormSkeleton = () => (
 );
 
 export const DetailSkeleton = () => (
-  <div className="animate-pulse space-y-4 p-6 bg-white rounded-lg shadow">
+  <div className="animate-pulse space-y-4 p-6 bg-card rounded-lg shadow">
     <Skeleton className="h-8 w-56" />
     <Skeleton className="h-4 w-full" />
     <Skeleton className="h-4 w-3/4" />
