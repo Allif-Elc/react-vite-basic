@@ -270,7 +270,7 @@ export default function Profile() {
       try {
         // Filter out empty strings to convert them to undefined
         const cleanedData = Object.fromEntries(
-          Object.entries(data).filter(([_, v]) => v !== "")
+          Object.entries(data).filter(([, v]) => v !== "")
         ) as ProfileFormData;
 
         if (profile) {

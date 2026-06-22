@@ -1,10 +1,10 @@
-import { memo, useEffect, useState, useCallback } from "react";
+import { memo, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userAttributeSchema, type UserAttributeFormData } from "../../schemas/abacSchema";
 import { useABACStore } from "../../stores/abacStore";
 import { useToastStore } from "../../stores/toastStore";
-import { X, User as UserIcon, Shield } from "lucide-react";
+import { X, Shield } from "lucide-react";
 import type { UserAttributeDetail, Attribute, User } from "../../types/abac";
 
 interface UserAttributeFormProps {

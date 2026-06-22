@@ -38,7 +38,7 @@ interface ResponseItemProps {
 }
 
 const ResponseItem = memo<ResponseItemProps>(
-  ({ field: _field, index, name, form, onRemove, expanded, onToggle }) => {
+  ({ index, name, form, onRemove, expanded, onToggle }) => {
     const { register, setValue } = form;
     const [localBodyValue, setLocalBodyValue] = useState("{}");
 

@@ -78,7 +78,7 @@ function formatBraceCode(code: string): string {
   let depth = 0;
   const indent = "  ";
 
-  for (let raw of lines) {
+  for (const raw of lines) {
     const trimmed = raw.trim();
     if (!trimmed) continue;
 
