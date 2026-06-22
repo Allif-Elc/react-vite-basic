@@ -8,7 +8,13 @@ export const headerSchema = z.object({
 });
 
 export const parameterSchema = z.object({
-  name: z.string().min(1, "Parameter name is required"),
+  name: z
+    .string()
+    .min(1, "Parameter name is required")
+    .regex(
+      /^[a-zA-Z_][a-zA-Z0-9_]*$/,
+      "Name must start with a letter or underscore and contain only alphanumeric characters"
+    ),
   type: z.enum(["string", "integer", "boolean", "number"]),
   description: z.string().optional(),
   required: z.boolean().default(false),
@@ -87,7 +93,10 @@ export const restAPISchema = z.object({
     .max(100, "Name must not exceed 100 characters"),
   description: z.string().max(500, "Description must not exceed 500 characters").optional(),
   method: z.enum(["GET", "POST", "PUT", "DELETE", "PATCH"]),
-  endpoint: z.string().min(1, "Endpoint is required"),
+  endpoint: z
+    .string()
+    .min(1, "Endpoint is required")
+    .regex(/^\//, "Endpoint must start with /"),
   headers: z.array(headerSchema).default([]),
   path_params: z.array(parameterSchema).default([]),
   query_params: z.array(parameterSchema).default([]),
