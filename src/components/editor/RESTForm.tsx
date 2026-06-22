@@ -6,7 +6,7 @@ import { ParameterList } from "../api/ParameterList";
 import { ResponseViewer } from "../api/ResponseViewer";
 import { restAPISchema, type RestAPIFormData } from "../../schemas/restSchema";
 import type { RestAPI } from "../../types/api";
-import { formatJSON } from "../../utils/jsonFormatter";
+import { formatCode } from "../../utils/codeFormatter";
 import { transformRequestBody, transformRequestBodyForDisplay } from "../../utils/jsonToSchema";
 import { useToastStore } from "../../stores/toastStore";
 import { useFormDraftStore } from "../../stores/formStore";
@@ -102,14 +102,14 @@ export const RESTForm = memo<RESTFormProps>(
       }
     }, [initialData, reset]);
 
-    const handleFormatJSON = useCallback(async () => {
-      const result = await formatJSON(requestBodyValue);
+    const handleBeautify = useCallback(async () => {
+      const result = await formatCode(requestBodyValue);
       if (result.error) {
-        addToast("Invalid JSON: " + result.error, "error");
+        addToast("Format error: " + result.error, "error");
       } else {
         setRequestBodyValue(result.formatted);
         setValue("request_body", result.formatted, { shouldValidate: true });
-        addToast("JSON formatted successfully", "success");
+        addToast("Formatted successfully", "success");
       }
     }, [requestBodyValue, setValue, addToast]);
 
@@ -306,9 +306,13 @@ export const RESTForm = memo<RESTFormProps>(
                 </label>
                 <button
                   type="button"
-                  onClick={handleFormatJSON}
-                  className="px-3 py-1 text-xs bg-gray-100 hover:bg-gray-200 rounded transition-colors"
+                  onClick={handleBeautify}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-gray-600 bg-white border border-gray-300 rounded-md hover:bg-gray-50 hover:text-gray-800 hover:border-gray-400 transition-all"
+                  title="Format JSON, XML, GraphQL, or JavaScript"
                 >
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16m-7 6h7" />
+                  </svg>
                   Prettier
                 </button>
               </div>
@@ -348,7 +352,7 @@ export const RESTForm = memo<RESTFormProps>(
           ),
         },
       ],
-      [register, control, setValue, errors, initialData, handleFormatJSON, requestBodyValue]
+      [register, control, setValue, errors, initialData, handleBeautify, requestBodyValue]
     );
 
     return (

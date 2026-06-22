@@ -1,28 +1,10 @@
-import prettier from "prettier";
+export { formatCode, type FormatResult } from "./codeFormatter";
 
-export interface FormatResult {
-  formatted: string;
-  error: string | null;
-}
-
-export async function formatJSON(jsonString: string): Promise<FormatResult> {
-  if (!jsonString.trim()) {
-    return { formatted: "", error: null };
-  }
-
-  try {
-    const formatted = await prettier.format(jsonString, {
-      parser: "json",
-      trailingComma: "es5",
-      tabWidth: 2,
-      useTabs: false,
-      semi: true,
-    });
-    return { formatted: formatted.trim(), error: null };
-  } catch (error) {
-    return {
-      formatted: jsonString,
-      error: error instanceof Error ? error.message : "Invalid JSON",
-    };
-  }
+/**
+ * Backward-compatible alias for `formatCode`.
+ * @deprecated Use `formatCode` instead — it auto-detects content type.
+ */
+export async function formatJSON(jsonString: string) {
+  const { formatCode } = await import("./codeFormatter");
+  return formatCode(jsonString);
 }

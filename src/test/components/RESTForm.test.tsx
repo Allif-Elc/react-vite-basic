@@ -24,19 +24,17 @@ vi.mock("../../stores/formStore", () => ({
   }),
 }));
 
-vi.mock("../../utils/jsonFormatter", () => ({
-  formatJSON: vi.fn(async (json: string) => {
+vi.mock("../../utils/codeFormatter", () => ({
+  formatCode: vi.fn(async (code: string) => {
+    // Simple mock: try JSON parse, else return as-is
     try {
-      const parsed = JSON.parse(json);
+      const parsed = JSON.parse(code);
       return {
         formatted: JSON.stringify(parsed, null, 2),
         error: null,
       };
     } catch {
-      return {
-        formatted: json,
-        error: "Invalid JSON",
-      };
+      return { formatted: code, error: null };
     }
   }),
 }));
