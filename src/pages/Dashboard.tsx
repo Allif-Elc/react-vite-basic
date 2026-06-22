@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useProjectStore, selectProjects } from "../stores/projectStore";
 import { ProjectSkeleton } from "../components/Skeleton";
 import { useToastStore } from "../stores/toastStore";
-import { Trash2 } from "lucide-react";
+import { Trash2, ExternalLink, Pencil } from "lucide-react";
 import { useConfirm } from "../stores/confirmDialogStore";
 
 const ProjectCard = memo(
@@ -14,6 +14,7 @@ const ProjectCard = memo(
   }: {
     project: {
       id: number;
+      slug: string;
       name: string;
       description: string;
       isPublic: boolean;
@@ -31,6 +32,22 @@ const ProjectCard = memo(
     const handleClick = useCallback(() => {
       navigate(`/projects/${project.id}`);
     }, [navigate, project.id]);
+
+    const handleViewDocs = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        window.open(`/docs/${project.slug}`, "_blank");
+      },
+      [project.slug]
+    );
+
+    const handleEdit = useCallback(
+      (e: React.MouseEvent) => {
+        e.stopPropagation();
+        navigate(`/projects/${project.id}/edit`);
+      },
+      [navigate, project.id]
+    );
 
     const formatDate = useMemo(() => {
       return new Date(project.updatedAt).toLocaleDateString();
@@ -93,6 +110,24 @@ const ProjectCard = memo(
         <p className="text-gray-600 text-sm mb-3 line-clamp-2">
           {project.description || "No description"}
         </p>
+        <div className="flex items-center gap-2 mb-3">
+          <button
+            onClick={handleViewDocs}
+            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 transition-colors"
+            aria-label="View documentation"
+          >
+            <ExternalLink className="w-3 h-3" />
+            View Docs
+          </button>
+          <button
+            onClick={handleEdit}
+            className="flex items-center gap-1 text-xs text-blue-600 hover:text-blue-700 transition-colors"
+            aria-label="Edit project"
+          >
+            <Pencil className="w-3 h-3" />
+            Edit
+          </button>
+        </div>
         <div className="flex items-center justify-between text-xs text-gray-500">
           <span
             className={`px-2 py-1 rounded ${project.isPublic ? "bg-green-100 text-green-700" : "bg-gray-100 text-gray-700"}`}

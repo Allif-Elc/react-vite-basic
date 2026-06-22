@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 import {
   fetchProjectsWithStats as fetchProjectsFromAPI,
   deleteProject as deleteProjectFromAPI,
+  updateProject as updateProjectFromAPI,
 } from "../services/apiService";
 import type { Project } from "../utils/transformers";
 import { isAuthError } from "../services/errors";
@@ -14,6 +15,7 @@ interface ProjectState {
   error: string | null;
   fetchProjects: () => Promise<void>;
   deleteProject: (projectId: number) => Promise<void>;
+  updateProject: (projectId: number, data: { name: string; description?: string }) => Promise<void>;
   setCurrentProject: (project: Project) => void;
   clearError: () => void;
 }
@@ -53,6 +55,27 @@ export const useProjectStore = create<ProjectState>()(
           if (!isAuthError(error)) {
             set({
               error: error instanceof Error ? error.message : "Failed to delete project",
+              loading: false,
+            });
+          } else {
+            set({ loading: false });
+          }
+          throw error;
+        }
+      },
+      updateProject: async (projectId: number, data: { name: string; description?: string }) => {
+        set({ loading: true, error: null });
+        try {
+          const updated = await updateProjectFromAPI(projectId, data);
+          set((state) => ({
+            projects: state.projects.map((p) => (p.id === projectId ? updated : p)),
+            currentProject: state.currentProject?.id === projectId ? updated : state.currentProject,
+            loading: false,
+          }));
+        } catch (error) {
+          if (!isAuthError(error)) {
+            set({
+              error: error instanceof Error ? error.message : "Failed to update project",
               loading: false,
             });
           } else {

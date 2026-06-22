@@ -54,6 +54,14 @@ export const deleteProject = async (projectId: number): Promise<void> => {
   await api.delete(`/api/v1/projects/${projectId}`);
 };
 
+export const updateProject = async (
+  projectId: number,
+  data: { name: string; description?: string }
+): Promise<FrontendProject> => {
+  const response = await api.put<ApiResponse<Project>>(`/api/v1/projects/${projectId}`, data);
+  return transformProject(unwrapResponse(response));
+};
+
 // Helper function to normalize array fields that may be serialized as objects with numeric keys
 const normalizeToArray = <T>(value: T[] | Record<string, T> | null | undefined): T[] => {
   if (!value) return [];
@@ -215,19 +223,28 @@ export const deleteGrpcAPI = async (apiId: number): Promise<void> => {
 
 // Public APIs (for Viewer)
 export const fetchPublicAPIs = async (
-  slug: string
+  slug: string,
+  page: number = 1,
+  limit: number = 20
 ): Promise<{
   project: FrontendProject;
-  rest: RestAPI[];
-  graphql: GraphQLAPI[];
-  grpc: GrpcAPI[];
+  rest: { data: RestAPI[]; page: number; limit: number; total: number };
+  graphql: { data: GraphQLAPI[]; page: number; limit: number; total: number };
+  grpc: { data: GrpcAPI[]; page: number; limit: number; total: number };
 }> => {
   const response = await api.get<
-    ApiResponse<{ project: Project; rest: RestAPI[]; graphql: GraphQLAPI[]; grpc: GrpcAPI[] }>
-  >(`/api/v1/public/projects/${slug}/full`);
+    ApiResponse<{
+      project: Project;
+      rest: { data: RestAPI[]; page: number; limit: number; total: number };
+      graphql: { data: GraphQLAPI[]; page: number; limit: number; total: number };
+      grpc: { data: GrpcAPI[]; page: number; limit: number; total: number };
+    }>
+  >(`/api/v1/public/projects/${slug}/full?page=${page}&limit=${limit}`);
   const data = unwrapResponse(response);
   return {
-    ...data,
     project: transformProject(data.project),
+    rest: data.rest,
+    graphql: data.graphql,
+    grpc: data.grpc,
   };
 };

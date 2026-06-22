@@ -10,6 +10,7 @@ const Layout = lazy(() => import("./components/layout/Layout"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const CreateProject = lazy(() => import("./pages/CreateProject"));
+const EditProject = lazy(() => import("./pages/EditProject"));
 const EditorREST = lazy(() => import("./pages/EditorREST"));
 const EditorGraphQL = lazy(() => import("./pages/EditorGraphQL"));
 const EditorGRPC = lazy(() => import("./pages/EditorGRPC"));
@@ -76,6 +77,7 @@ function App() {
                 <Route path="user-attributes" element={<UserAttributesList />} />
               </Route>
               <Route path="projects/new" element={<CreateProject />} />
+              <Route path="projects/:id/edit" element={<EditProject />} />
               <Route path="projects/:id" element={<ProjectDetail />} />
               <Route path="projects/:id/rest/new" element={<EditorREST />} />
               <Route path="projects/:id/graphql/new" element={<EditorGraphQL />} />
